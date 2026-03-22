@@ -1,10 +1,14 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
 
 // 1. State Management
-const currentView = ref('design') // 'design' or 'build' or 'output'
+const activeViews = ref({
+  'design': true,
+  'build': false,
+  'output': false
+})
 const jsonInput = ref(`[
   {
     "id": 1,
@@ -29,63 +33,65 @@ const formData = computed(() => {
 
 // 3. Methods
 const setView = (view) => {
-  currentView.value = view
+  console.log(view);
+  // activeViews[view] = true
 }
 </script>
 
 <template>
-  <div class="form-builder-app">
-    <Header title="FormBuilder" />
+  <Header title="FormBuilder" />
 
-    <Nav 
-      v-model:currentView="currentView"
-      :build-disabled="!formData"
-    />
+  <Nav 
+    v-model:activeViews="activeViews"
+    :build-disabled="!formData"
+  />
 
-    <main class="content-area">
+  <main class="content-area">
+    <!-- This will be made into a component -->
+    <section v-if="activeViews.design === true" class="design-view">
+      <h3>Input your Form JSON</h3>
+      <textarea 
+        v-model="jsonInput" 
+        placeholder='{ "id": 1, "question": "...", "component": "text" }'
+      ></textarea>
+      <p v-if="!formData" class="error">Invalid JSON syntax detected.</p>
+    </section>
+    <!-- ################################## -->
+
+    <section v-if="activeViews.build === true" class="build-view">
       <!-- This will be made into a component -->
-      <section v-if="currentView === 'design'" class="design-view">
-        <h3>Input your Form JSON</h3>
-        <textarea 
-          v-model="jsonInput" 
-          placeholder='{ "id": 1, "question": "...", "component": "text" }'
-        ></textarea>
-        <p v-if="!formData" class="error">Invalid JSON syntax detected.</p>
-      </section>
-      <!-- ################################## -->
-
-      <section v-else-if="currentView === 'build'" class="build-view">
-        <!-- This will be made into a component -->
-        <!-- IF THE FORM IS THE FIRST COMPONENT HERE IT CAN HAVE DEDICATED SCOPED CSS -->
-        <form @submit.prevent>
-          <!-- 
-          THIS IS PRETTY GOOD FOR GENERIC FORM BUT WILL MAKE 
-          THIS INTO COMPONENT FOR RECURSIVE COMPONENTS
-          THAT WAY I CAN HAVE QUESTION DEPENDENCIES
-          -->
-          <div v-for="field in formData" :key="field.id" class="form-group">
-            <label>{{ field.question }}</label>
-            
-            <input v-if="field.component === 'text'" type="text" />
-            <textarea v-else-if="field.component === 'textarea'" class="form-text"></textarea>
-            <p v-else>Unknown component type: {{ field.component }}</p>
-          </div>
-          <div class="submit-row">
-            <button type="submit" @click="setView('result')" class="submit-btn">Submit Form</button>
-          </div>
-        </form>
-      </section>
-      <!-- ################################## -->
-    </main>
-  </div>
+      <!-- IF THE FORM IS THE FIRST COMPONENT HERE IT CAN HAVE DEDICATED SCOPED CSS -->
+      <form @submit.prevent>
+        <!-- 
+        THIS IS PRETTY GOOD FOR GENERIC FORM BUT WILL MAKE 
+        THIS INTO COMPONENT FOR RECURSIVE COMPONENTS
+        THAT WAY I CAN HAVE QUESTION DEPENDENCIES
+        -->
+        <div v-for="field in formData" :key="field.id" class="form-group">
+          <label>{{ field.question }}</label>
+          
+          <input v-if="field.component === 'text'" type="text" />
+          <textarea v-else-if="field.component === 'textarea'" class="form-text"></textarea>
+          <p v-else>Unknown component type: {{ field.component }}</p>
+        </div>
+        <div class="submit-row">
+          <button type="submit" @click="setView('result')" class="submit-btn">Submit Form</button>
+        </div>
+      </form>
+    </section>
+    <!-- ################################## -->
+  </main>
 </template>
 
-<style scoped>
-.form-builder-app {
-  height: 100%;
-  max-width: 600px;
-  margin: 0rem auto;
-  font-family: lexend;
+<style>
+.content-area {
+  /* background-color: azure; */
+  display: flex;
+  flex-direction: row;
+  width: 980px;
+  justify-self: center;
+  justify-content: center;
+  gap: 1em;
 }
 
 textarea {
@@ -94,8 +100,9 @@ textarea {
   font-family: lexend;
   padding: 10px;
   box-sizing: border-box;
-  min-width:600px;
-  max-width:600px;
+  margin: auto;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .form-text {
@@ -104,8 +111,8 @@ textarea {
   font-family: lexend;
   padding: 10px;
   box-sizing: border-box;
-  min-width:600px;
-  max-width:600px;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .form-group {

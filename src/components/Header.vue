@@ -23,7 +23,6 @@ header {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem; 
-    font-size: xx-large;
+    font-size: 6vw;
 }
 </style>
