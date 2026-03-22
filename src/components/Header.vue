@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>{{ title }}</h1>
-        <ThemeToggle />
+        <ThemeToggle class="theme-toggle"/>
     </header>
 </template>
 
@@ -23,6 +23,10 @@ header {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    font-size: 6vw;
+    container-type: inline-size;
+}
+
+h1 {
+    font-size: 15cqw;
 }
 </style>

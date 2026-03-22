@@ -24,21 +24,22 @@ defineProps({
 }
 
 .moon {
-    fill: aliceblue;
+    fill: rgb(103, 106, 109);
     position: absolute;
     bottom: 100%;
     left: 5px;
     z-index: 3;
     width: 26px;
-    transition: bottom 0.5s ease-in-out;
+    transition: bottom 0.5s ease-in-out, fill 0.5s;
     outline: none;
     -webkit-tap-highlight-color: transparent;
 }
 
 .moon.is-toggled{
+    fill: aliceblue;
     cursor: pointer;
     position: absolute;
     bottom: 36px;
-    transition: bottom 0.5s ease-in-out;
+    transition: bottom 0.5s ease-in-out, fill 0.5s;
 }
 </style>
