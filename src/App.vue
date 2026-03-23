@@ -85,7 +85,6 @@ const setView = (view) => {
 
 <style>
 .content-area {
-  background-color: azure;
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
