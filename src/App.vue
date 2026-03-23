@@ -85,10 +85,10 @@ const setView = (view) => {
 
 <style>
 .content-area {
-  /* background-color: azure; */
+  background-color: azure;
   display: flex;
-  flex-direction: row;
-  width: 980px;
+  flex-flow: row nowrap;
+  width: 100%;
   justify-self: center;
   justify-content: center;
   gap: 1em;
@@ -111,6 +111,7 @@ textarea {
   font-family: lexend;
   padding: 10px;
   box-sizing: border-box;
+  margin: auto;
   min-width: 100%;
   max-width: 100%;
 }

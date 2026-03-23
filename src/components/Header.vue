@@ -18,11 +18,13 @@ defineProps({
 
 <style scoped>
 header {
+    max-width: 600px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    margin: auto;
     container-type: inline-size;
 }
 
