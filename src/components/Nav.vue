@@ -1,21 +1,21 @@
 <template>
     <nav class="controls">
       <button 
-        :class="{ active: isActive('design') }" 
-        @click="$emit('update:activeViews', newActiveViews('design'))"
+        :class="{ active: isDesign }" 
+        @click="changeView('design')"
       >
         Design
       </button>
       <button 
-        :class="{ active: isActive('build') }" 
-        @click="$emit('update:activeViews', newActiveViews('build'))"
+        :class="{ active: isBuild }" 
+        @click="changeView('build')"
         :disabled="buildDisabled"
       >
         Build
       </button>
       <button 
-        :class="{ active: isActive('output') }" 
-        @click="$emit('update:activeViews', newActiveViews('output'))"
+        :class="{ active: isOutput }" 
+        @click="changeView('output')"
       >
         Output
       </button>
@@ -36,56 +36,96 @@ const props = defineProps({
     }
 })
 
-const emptyViews = {
-  'design': false,
-  'build': false,
-  'output': false
-}
 const currentActiveViews = ref(JSON.parse(JSON.stringify(props.activeViews)))
+const viewHistory = ref(initViewHistory());
 
-defineEmits(['update:activeViews'])
-
-function newActiveViews(view){
-  let cur = currentActiveViews.value;
-  if(cur[view] && numberActive.value == 1){
-    return cur; // cant disable the only view enabled
-  }
-  if(!cur[view] && (!isWide.value || (numberActive.value > 1 && isWide))){
-    cur = { ...emptyViews };
-    cur[view] = true;
-    currentActiveViews.value = cur;
-    return cur; // switch screens if not wide enough for multiple
-  }
-  cur[view] = !cur[view];
-  currentActiveViews.value = cur;
-  return cur;
+function initViewHistory() {
+  var viewHistory = [];
+  if(currentActiveViews.value.design) viewHistory.push('design');
+  if(currentActiveViews.value.build) viewHistory.push('build');
+  if(currentActiveViews.value.output) viewHistory.push('output');
+  return viewHistory;
 }
 
-function isActive(view) {
-  return currentActiveViews.value[view] === true;
-}
+const emits = defineEmits(['update:activeViews'])
 
-const numberActive = computed(() => {
-  return isActive('design') + isActive('build') + isActive('output');
-})
+function changeView(view){
+  if(currentActiveViews.value[view]) {
+    tryToDisable(view);
+  }
+  else {
+    tryToEnable(view);
+  }
+
+  function tryToEnable(view) {
+    if(viewHistory.value.length >= maxViews.value) {
+      disableLastEnabled();
+    };
+    enableView(view)
+  }
+
+  function tryToDisable(view) {
+    if(viewHistory.value.length == 1) return;
+    if(viewHistory.value.length > 1) {
+      disableView(view);
+    }
+  }
+  
+  function enableView(view) {
+    currentActiveViews.value[view] = true;
+    viewHistory.value.push(view);
+    emits('update:activeViews', currentActiveViews.value);
+  }
+
+  function disableView(view) {
+    currentActiveViews.value[view] = false;
+    viewHistory.value = viewHistory.value.filter(element => element !== view);
+    emits('update:activeViews', currentActiveViews.value);
+  }
+
+  function disableLastEnabled() {
+    var viewToDisable = viewHistory.value.shift();
+    disableView(viewToDisable);
+  }
+}
 
 const width = ref(window.innerWidth)
 
+const maxViews = computed(() => {
+  if(width.value < 800) return 1;
+  if(width.value < 1200) return 2;
+  return 3;
+})
+
+const isDesign = computed(() => {
+  return currentActiveViews.value.design;
+})
+
+const isBuild = computed(() => {
+  return currentActiveViews.value.build;
+})
+
+const isOutput = computed(() => {
+  return currentActiveViews.value.output;
+})
+
+// Probs good to add debounce here
 function updateWidth() {
-  // NEED TO DEBOUNCE THIS - NO NEED TO RUN SO MUCH
   width.value = window.innerWidth;
+
+  while(viewHistory.value.length > maxViews.value && viewHistory.value.length != 1){
+    var removedView = viewHistory.value.shift();
+    currentActiveViews.value[removedView] = false;
+    emits('update:activeViews', currentActiveViews.value);
+  }
 }
 
 onMounted(() => {
-window.addEventListener("resize", updateWidth);
+  window.addEventListener("resize", updateWidth);
 })
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
-})
-
-const isWide = computed(() => {
-  return width.value > 650;
 })
 </script>
 
@@ -100,17 +140,8 @@ nav {
 button {
   padding: 10px 20px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background: white;
   min-width: 90px;
   text-align: center;
-  font-family: lexend;
   font-weight: 600
-}
-
-button.active {
-  background: #42b883;
-  color: white;
-  border-color: #42b883;
 }
 </style>

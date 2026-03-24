@@ -19,6 +19,7 @@ defineProps({
 <style scoped>
 header {
     max-width: 600px;
+
     display: flex;
     flex-direction: row;
     justify-content: center;

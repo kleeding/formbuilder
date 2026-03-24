@@ -80,13 +80,24 @@ const setView = (view) => {
       </form>
     </section>
     <!-- ################################## -->
+
+    <section v-if="activeViews.output === true" class="build-view">
+      <!-- This will be made into a component -->
+      <h3>Form Output</h3>
+    </section>
   </main>
 </template>
 
 <style>
+/* main {
+  min-height: 800px;
+  background-color: aqua;
+} */
+
 .content-area {
   display: flex;
   flex-flow: row nowrap;
+  flex-grow: 1;
   width: 100%;
   justify-self: center;
   justify-content: center;
