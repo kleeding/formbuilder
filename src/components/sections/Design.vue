@@ -13,7 +13,7 @@
             <button @click="beautify">Beautify</button>
         </div>
         <textarea
-            id="json-input"
+            class="json-input"
             v-model="json"
             placeholder='{ "id": 1, "question": "...", "component": "text" }'
         ></textarea>
@@ -58,8 +58,6 @@ watch(json, (newJson) => {
 .design-view {
     background-color: var(--color-border);
     flex-grow: 1;
-    max-width: 600px;
-    min-width: 320px;
     padding: 1em;
     border-radius: 20px;
     display: flex;
@@ -84,9 +82,29 @@ button:hover {
     background: var(--color-button);
 }
 
-#json-input {
+.json-input {
     background-color: var(--color-background-chill);
     color: var(--color-text);
+}
+
+.json-input::-webkit-scrollbar {
+    width: 5px;
+}
+
+.json-input::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.json-input::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: var(--color-scrollbar); 
+}
+
+.json-input::-webkit-resizer {
+    background-color: var(--color-background-chill);
 }
 
 .error { 

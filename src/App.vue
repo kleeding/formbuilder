@@ -2,72 +2,142 @@
 import { ref, computed } from 'vue'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
-import Design from './components/Design.vue'
+import Design from './components/sections/Design.vue'
+import Build from './components/sections/Build.vue'
 
 const activeViews = ref({
-  'design': true,
-  'build': false,
-  'output': false
+    'design': true,
+    'build': false,
+    'output': false
 })
-const jsonInput = ref(`[
-    {
-        "id": 1,
-        "question": "What is your name?",
-        "component": "text"
-    },
-    {
-        "id": 2,
-        "question": "Describe your experience",
-        "component": "textarea"
-    }
-]`)
+const jsonInput = ref(`{
+    "title": "My First Form",
+    "sections": [
+        {
+            "id": "1",
+            "title": "The First Section",
+            "questions": [
+                {
+                    "id": "1.1",
+                    "label": "Is this a question label?",
+                    "component": "text"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "The Second Section",
+            "questions": [
+                {
+                    "id": "2.1",
+                    "label": "What is your name?",
+                    "component": "text",
+                    "required": "true"
+                },
+                {
+                    "id": "2.2",
+                    "label": "What is your name?",
+                    "component": "textarea"
+                },
+                {
+                    "id": "2.3",
+                    "label": "What is your name?",
+                    "component": "select",
+                    "options": [
+                        {
+                            "text": "Please Select",
+                            "value": "0"
+                        },
+                        {
+                            "text": "One",
+                            "value": "1"
+                        },
+                        {
+                            "text": "Two",
+                            "value": "2"
+                        },
+                        {
+                            "text": "Three",
+                            "value": "3"
+                        }
+                    ],
+                    "required": "true"
+                }
+            ]
+        }
+    ],
+    "questions": [
+        {
+            "id": "m.1",
+            "label": "Describe your experience",
+            "component": "textarea",
+            "questions": [
+                {
+                    "id": "m.1.1",
+                    "label": "What is your name?",
+                    "component": "text"
+                }
+            ]
+        },
+        {
+            "id": "m.1",
+            "label": "What is your name?",
+            "component": "text",
+            "questions": [
+                {
+                    "id": "m.1.1",
+                    "label": "What is your name?",
+                    "component": "text"
+                },
+                {
+                    "id": "m.1.2",
+                    "label": "What is your name?",
+                    "component": "text"
+                },
+                {
+                    "id": "m.1.3",
+                    "label": "What is your name?",
+                    "component": "text"
+                }
+            ]
+        }
+    ]
+}`)
+
+// Memory of the form data so if there is an error last non-error form builds
+const oldFormData = ref(JSON.parse(jsonInput.value));
+oldFormData.value.valid = true;
 
 const formData = computed(() => {
-  try {
-    return JSON.parse(jsonInput.value);
-  } catch (e) {
-    return null; // Returns null if JSON is invalid
-  }
+    try {
+        oldFormData.value = JSON.parse(jsonInput.value);
+        oldFormData.value.valid = true;
+    } catch (e) {
+        oldFormData.value.valid = false;
+    }
+    return oldFormData.value;
 })
 </script>
 
 <template>
   <Header />
 
-  <Nav 
+  <Nav
     v-model:activeViews="activeViews"
     :build-disabled="!formData"
   />
 
   <main class="content-area">
-    <Design 
+    <Design
       v-model:jsonInput="jsonInput"
       :is-enabled="activeViews.design === true"
-      :is-form-invalid="!formData"
+      :is-form-invalid="!formData.valid"
     />
-    
-    <section v-if="activeViews.build === true" class="build-view">
-      <!-- This will be made into a component -->
-      <!-- IF THE FORM IS THE FIRST COMPONENT HERE IT CAN HAVE DEDICATED SCOPED CSS -->
-      <form @submit.prevent>
-        <!-- 
-        THIS IS PRETTY GOOD FOR GENERIC FORM BUT WILL MAKE 
-        THIS INTO COMPONENT FOR RECURSIVE COMPONENTS
-        THAT WAY I CAN HAVE QUESTION DEPENDENCIES
-        -->
-        <div v-for="field in formData" :key="field.id" class="form-group">
-          <label>{{ field.question }}</label>
-          
-          <input v-if="field.component === 'text'" type="text" />
-          <textarea v-else-if="field.component === 'textarea'" class="form-text"></textarea>
-          <p v-else>Unknown component type: {{ field.component }}</p>
-        </div>
-        <div class="submit-row">
-          <button type="submit" @click="console.log('clicked submit')" class="submit-btn">Submit Form</button>
-        </div>
-      </form>
-    </section>
-    <!-- ################################## -->
+
+    <Build
+      :form-data="formData"
+      :is-enabled="activeViews.build === true"
+    />
 
     <!-- <section v-if="activeViews.output === true" class="build-view"> -->
       <!-- This will be made into a component -->
@@ -78,7 +148,6 @@ const formData = computed(() => {
 
 <style>
 .content-area {
-  /* background-color: rgba(250, 235, 215, 0.13); */
   display: flex;
   flex-flow: row nowrap;
   flex-grow: 1;
@@ -137,66 +206,3 @@ label { font-weight: bold; margin-bottom: 0.5rem; }
   color: white;
 }
 </style>
-
-
-
-<!--
-<script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
-import FormBuilderTitle from "./components/FormBuilderTitle.vue";
-</script>
--->
-
-<!-- <template>
-  <header> -->
-    <!-- <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div> -->
-    <!-- <div class="wrapper">
-      <FormBuilderTitle msg="You did it!" />
-    </div>
-    
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-} -->
-
-<!-- @media (min-width: 1024px) {
-  /* header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  } */
-
-  /* .logo {
-    margin: 0 2rem 0 0;
-  } */
-
-  /* header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  } */
-}
-</style> -->
