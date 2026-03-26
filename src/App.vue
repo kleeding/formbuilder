@@ -10,16 +10,16 @@ const activeViews = ref({
   'output': false
 })
 const jsonInput = ref(`[
-  {
-    "id": 1,
-    "question": "What is your name?",
-    "component": "text"
-  },
-  {
-    "id": 2,
-    "question": "Describe your experience",
-    "component": "textarea"
-  }
+    {
+        "id": 1,
+        "question": "What is your name?",
+        "component": "text"
+    },
+    {
+        "id": 2,
+        "question": "Describe your experience",
+        "component": "textarea"
+    }
 ]`)
 
 const formData = computed(() => {
@@ -83,6 +83,7 @@ const formData = computed(() => {
   flex-flow: row nowrap;
   flex-grow: 1;
   width: 100%;
+  max-width: 1200px;
   justify-self: center;
   justify-content: center;
   gap: 1em;
