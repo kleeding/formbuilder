@@ -13,12 +13,12 @@
       >
         Build
       </button>
-      <button 
+      <!-- <button 
         :class="{ active: isOutput }" 
         @click="changeView('output')"
       >
         Output
-      </button>
+      </button> -->
     </nav>    
 </template>
 

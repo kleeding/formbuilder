@@ -24,9 +24,9 @@ const jsonInput = ref(`[
 
 const formData = computed(() => {
   try {
-    return JSON.parse(jsonInput.value)
+    return JSON.parse(jsonInput.value);
   } catch (e) {
-    return null // Returns null if JSON is invalid
+    return null; // Returns null if JSON is invalid
   }
 })
 </script>
@@ -69,10 +69,10 @@ const formData = computed(() => {
     </section>
     <!-- ################################## -->
 
-    <section v-if="activeViews.output === true" class="build-view">
+    <!-- <section v-if="activeViews.output === true" class="build-view"> -->
       <!-- This will be made into a component -->
-      <h3>Form Output</h3>
-    </section>
+      <!-- <h3>Form Output</h3>
+    </section> -->
   </main>
 </template>
 
