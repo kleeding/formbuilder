@@ -134,14 +134,22 @@ nav {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 1rem;
 }
 
 button {
-  padding: 10px 20px;
+  border: 1px solid var(--vt-c-soft);
+  background: var(--vt-c-mute);
+  color: var(--color-text);
   cursor: pointer;
   min-width: 90px;
+  padding: 10px 20px;
   text-align: center;
+  font-family: lexend;
   font-weight: 600
+}
+
+button.active {
+  background: var(--color-button);
+  border-color: var(--color-button-border);
 }
 </style>

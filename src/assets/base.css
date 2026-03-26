@@ -4,9 +4,10 @@
 }
 
 [data-theme="light"] {
-  --vt-c: #ffffff;
-  --vt-c-soft: #f8f8f8;
-  --vt-c-mute: #f2f2f2;
+  --vt-c: rgb(255, 255, 255);
+  --vt-c-soft: rgb(247, 247, 247);
+  --vt-c-mute: rgb(242, 242, 242);
+  --vt-c-chill: rgb(255, 255, 255);
 
   --vt-c-divider-1: rgba(60, 60, 60, 0.29);
   --vt-c-divider-2: rgba(60, 60, 60, 0.12);
@@ -16,9 +17,10 @@
 }
 
 [data-theme="dark"] {
-  --vt-c: #181818;
-  --vt-c-soft: #222222;
-  --vt-c-mute: #282828;
+  --vt-c: rgb(24, 24, 24);
+  --vt-c-soft: rgb(34, 34, 34);
+  --vt-c-mute: rgb(40, 40, 40);
+  --vt-c-chill: rgb(99, 99, 99);
 
   --vt-c-divider-1: rgba(84, 84, 84, 0.65);
   --vt-c-divider-2: rgba(84, 84, 84, 0.48);
@@ -31,6 +33,7 @@
   --color-background: var(--vt-c);
   --color-background-soft: var(--vt-c-soft);
   --color-background-mute: var(--vt-c-mute);
+  --color-background-chill: var(--vt-c-chill);
 
   --color-border: var(--vt-c-divider-2);
   --color-border-hover: var(--vt-c-divider-1);
@@ -38,28 +41,31 @@
   --color-heading: var(--vt-c-text-1);
   --color-text: var(--vt-c-text-2);
 
+  --color-button: #eb7f033f;
+  --color-button-border: #c9760a;
+
   --section-gap: 160px;
 }
 
-section {
-  background-color: var(--color-border);
-  flex-grow: 1;
-  max-width: 600px;
-  min-width: 370px;
-  padding: 1em;
-  border-radius: 20px;
-}
-
-button {
-  border: 1px solid var(--vt-c-soft);
-  background: var(--vt-c-mute);
+body {
   color: var(--color-text);
-  font-family: lexend;
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family: Lexend;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }
 
-button.active {
-  background: #42b883;
-  border-color: #42b883;
+* {
+  transition:
+    color 0.5s,
+    background-color 0.5s;
 }
 
 *,
@@ -68,19 +74,4 @@ button.active {
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
-}
-
-body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 1.2s,
-    background-color 0.2s;
-  line-height: 1.6;
-  font-family: Lexend;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

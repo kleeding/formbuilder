@@ -2,8 +2,8 @@
 import { ref, computed } from 'vue'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
+import Design from './components/Design.vue'
 
-// 1. State Management
 const activeViews = ref({
   'design': true,
   'build': false,
@@ -22,7 +22,6 @@ const jsonInput = ref(`[
   }
 ]`)
 
-// 2. Parsing Logic
 const formData = computed(() => {
   try {
     return JSON.parse(jsonInput.value)
@@ -30,16 +29,10 @@ const formData = computed(() => {
     return null // Returns null if JSON is invalid
   }
 })
-
-// 3. Methods
-const setView = (view) => {
-  console.log(view);
-  // activeViews[view] = true
-}
 </script>
 
 <template>
-  <Header title="FormBuilder" />
+  <Header />
 
   <Nav 
     v-model:activeViews="activeViews"
@@ -47,17 +40,12 @@ const setView = (view) => {
   />
 
   <main class="content-area">
-    <!-- This will be made into a component -->
-    <section v-if="activeViews.design === true" class="design-view">
-      <h3>Input your Form JSON</h3>
-      <textarea 
-        v-model="jsonInput" 
-        placeholder='{ "id": 1, "question": "...", "component": "text" }'
-      ></textarea>
-      <p v-if="!formData" class="error">Invalid JSON syntax detected.</p>
-    </section>
-    <!-- ################################## -->
-
+    <Design 
+      v-model:jsonInput="jsonInput"
+      :is-enabled="activeViews.design === true"
+      :is-form-invalid="!formData"
+    />
+    
     <section v-if="activeViews.build === true" class="build-view">
       <!-- This will be made into a component -->
       <!-- IF THE FORM IS THE FIRST COMPONENT HERE IT CAN HAVE DEDICATED SCOPED CSS -->
@@ -75,7 +63,7 @@ const setView = (view) => {
           <p v-else>Unknown component type: {{ field.component }}</p>
         </div>
         <div class="submit-row">
-          <button type="submit" @click="setView('result')" class="submit-btn">Submit Form</button>
+          <button type="submit" @click="console.log('clicked submit')" class="submit-btn">Submit Form</button>
         </div>
       </form>
     </section>
@@ -89,12 +77,8 @@ const setView = (view) => {
 </template>
 
 <style>
-/* main {
-  min-height: 800px;
-  background-color: aqua;
-} */
-
 .content-area {
+  /* background-color: rgba(250, 235, 215, 0.13); */
   display: flex;
   flex-flow: row nowrap;
   flex-grow: 1;
@@ -102,17 +86,17 @@ const setView = (view) => {
   justify-self: center;
   justify-content: center;
   gap: 1em;
+  padding: 1em;
 }
 
 textarea {
   width: 100%;
-  min-height: 400px;
   font-family: lexend;
   padding: 10px;
-  box-sizing: border-box;
-  margin: auto;
-  min-width: 100%;
-  max-width: 100%;
+  resize: vertical;
+  flex-grow: 1;
+  /* box-sizing: border-box; */
+  /* margin: auto; */
 }
 
 .form-text {
@@ -134,15 +118,13 @@ textarea {
 
 label { font-weight: bold; margin-bottom: 0.5rem; }
 
-.error { color: red; font-size: 0.8rem; }
-
 .submit-row {
   display: flex;
   justify-content: center;
 }
 
 .submit-btn {
-    padding: 10px 20px;
+  padding: 10px 20px;
   cursor: pointer;
   border: 1px solid #ccc;
   background: white;

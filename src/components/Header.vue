@@ -1,35 +1,28 @@
 <template>
     <header>
-        <h1>{{ title }}</h1>
+        <div class="title">
+            FormBuilder
+        </div>
         <ThemeToggle class="theme-toggle"/>
     </header>
 </template>
 
 <script setup>
 import ThemeToggle from './ThemeToggle.vue'
-
-defineProps({
-    title: {
-        type: String,
-        required: true,
-    }
-})
 </script>
 
 <style scoped>
 header {
-    max-width: 600px;
-
+    height: 120px;
+    width: min(600px, 100%);
     display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
-    gap: 1rem;
-    margin: auto;
-    container-type: inline-size;
+    padding: 1em;
 }
 
-h1 {
-    font-size: 15cqw;
+.title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: min(4.75rem, calc(1rem + 8vw));
 }
 </style>
