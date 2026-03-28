@@ -1,5 +1,5 @@
 <template>
-    <div v-for="question in questions" :key="question.id" class="form-question">
+    <div v-if="isEnabled ?? true" v-for="question in questions" :key="question.id" class="form-question">
         <label class="question-label">
             {{ question.id + " " + question.label }}
             <div v-if="question.required === 'true'" class="required">*</div>
@@ -14,12 +14,18 @@
 <script setup>
 import Text from './QuestionTypes/Text.vue';
 import Select from './QuestionTypes/Select.vue';
+import Radio from './QuestionTypes/Radio.vue';
 import Unknown from './QuestionTypes/Unknown.vue';
 
 const props = defineProps({
     questions: {
         type: Object,
         required: true
+    },
+    isEnabled: {
+        type: Boolean,
+        default: true,
+        required: false
     }
 })
 
@@ -32,7 +38,7 @@ function getComponent(question) {
         case 'select':
             return Select;
         case 'radio':
-            return 'Radio';
+            return Radio;
         default:
             return Unknown;
     }

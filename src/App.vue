@@ -19,8 +19,27 @@ const jsonInput = ref(`{
             "questions": [
                 {
                     "id": "1.1",
-                    "label": "Is this a question label?",
-                    "component": "text"
+                    "model-name": "q1",
+                    "label": "Is this a text input?",
+                    "component": "text",
+                    "placeholder": "placeholder text goes here"
+                },
+                {
+                    "id": "2.3",
+                    "model-name": "q2",
+                    "label": "This is a select?",
+                    "component": "radio",
+                    "default": "1",
+                    "options": [
+                        {
+                            "label": "Yes",
+                            "value": "1"
+                        },
+                        {
+                            "label": "No",
+                            "value": "0"
+                        }
+                    ]
                 }
             ]
         },
@@ -30,34 +49,38 @@ const jsonInput = ref(`{
             "questions": [
                 {
                     "id": "2.1",
-                    "label": "What is your name?",
+                    "model-name": "q2.1",
+                    "label": "Another text input?",
                     "component": "text",
+                    "default": "This is a default set text input",
                     "required": "true"
                 },
                 {
                     "id": "2.2",
-                    "label": "What is your name?",
+                    "model-name": "q2.2",
+                    "label": "This is a textarea?",
                     "component": "textarea"
                 },
                 {
                     "id": "2.3",
-                    "label": "What is your name?",
+                    "model-name": "q2.3",
+                    "label": "This is a select?",
                     "component": "select",
                     "options": [
                         {
-                            "text": "Please Select",
+                            "label": "Please Select",
                             "value": "0"
                         },
                         {
-                            "text": "One",
+                            "label": "One",
                             "value": "1"
                         },
                         {
-                            "text": "Two",
+                            "label": "Two",
                             "value": "2"
                         },
                         {
-                            "text": "Three",
+                            "label": "Three",
                             "value": "3"
                         }
                     ],
@@ -69,34 +92,14 @@ const jsonInput = ref(`{
     "questions": [
         {
             "id": "m.1",
-            "label": "Describe your experience",
+            "model-name": "qm.1",
+            "label": "Untitled section question?",
             "component": "textarea",
             "questions": [
                 {
                     "id": "m.1.1",
-                    "label": "What is your name?",
-                    "component": "text"
-                }
-            ]
-        },
-        {
-            "id": "m.1",
-            "label": "What is your name?",
-            "component": "text",
-            "questions": [
-                {
-                    "id": "m.1.1",
-                    "label": "What is your name?",
-                    "component": "text"
-                },
-                {
-                    "id": "m.1.2",
-                    "label": "What is your name?",
-                    "component": "text"
-                },
-                {
-                    "id": "m.1.3",
-                    "label": "What is your name?",
+                    "model-name": "qm.1.1",
+                    "label": "This is a child question?",
                     "component": "text"
                 }
             ]
@@ -107,6 +110,27 @@ const jsonInput = ref(`{
 // Memory of the form data so if there is an error last non-error form builds
 const oldFormData = ref(JSON.parse(jsonInput.value));
 oldFormData.value.valid = true;
+
+const formModel = ref(setupFormModel());
+function setupFormModel(){
+    var model = {};
+    const stack = [oldFormData.value];
+    while (stack?.length > 0) {
+        const currentObj = stack.pop();
+        Object.keys(currentObj).forEach(key => {
+            if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
+                if (key === 'questions'){
+                    currentObj[key].forEach((question) => {
+                        var defaultValue = question.default ?? (question.component === 'select' ? 0 : "");
+                        model[question['model-name']] = defaultValue;
+                    })
+                }
+                stack.push(currentObj[key]);
+            }
+        });
+    }
+    return model;
+}
 
 const formData = computed(() => {
     try {

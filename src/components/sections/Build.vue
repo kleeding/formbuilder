@@ -4,6 +4,15 @@
 
         <div v-if="hasTitle" class="form-title">{{ formData.title }}</div>
 
+        <!-- 
+        GOING TO CHANGE THIS SO THAT IT GOES THROUGH THE OBJECT ONE BY ONE 
+        - IF SECTION THEN RUN SECTION COMPONENT
+        - IF QUESTION THEN RUN QUESTION
+        THIS WAY WE CAN HAVE LAYERED SECTIONS AND NON-SECTIONS
+        - THIS MEANS WE CAN START WITH A NON-SECTION, END OF A NON-SECTION, 
+          AND ANY OTHER COMBINATION OF NON-SECTION/SECTIONS
+        -->
+
         <div v-for="section in formData.sections" :key="section.id" class="form-section">
             <div class="section-title">{{section.title}}</div>
             <QuestionSet :questions="section.questions"/>

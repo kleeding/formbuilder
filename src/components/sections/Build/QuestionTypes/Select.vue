@@ -1,7 +1,7 @@
 <template>
     <select>
         <option v-for="option in getOptions" :value="option.value">
-            {{ option.text }}
+            {{ option.label }}
         </option>
     </select>
 </template>
