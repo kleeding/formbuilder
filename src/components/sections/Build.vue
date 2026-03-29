@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs, computed, watch } from 'vue'
+import { ref, toRefs, computed, watch, onMounted } from 'vue'
 import { getDefault } from '../javascript/getDefaults';
 import QuestionSet from './Build/QuestionSet.vue'
 
@@ -105,6 +105,10 @@ function searchStack(stack) {
     }
     return model;
 }
+
+onMounted(() => {
+    getFormModel();
+})
 </script>
 
 <style scoped>
