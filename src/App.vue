@@ -7,7 +7,7 @@ import Build from './components/sections/Build.vue'
 
 const activeViews = ref({
     'design': true,
-    'build': true,
+    'build': false,
     'output': false
 })
 
