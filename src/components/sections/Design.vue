@@ -10,9 +10,13 @@
     <section class="design-view">
         <div id="design-title">
             <h3>Input your Form JSON</h3>
-            <button @click="beautify">Beautify</button>
+            <div class="json-buttons">
+                <button @click="clean">Clean</button>
+                <button @click="beautify">Beautify</button>
+            </div>
         </div>
         <textarea
+            id="json-input"
             class="json-input"
             v-model="formJson"
             placeholder='{ "id": 1, "question": "...", "component": "text" }'
@@ -23,9 +27,9 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { example } from './Design/jsonInputs';
+import { example, example2 } from './Design/jsonInputs';
 
-const formJson = ref(example);
+const formJson = ref(example2);
 // Memory of the form data so if there is an error last non-error form builds
 const currentFormData = ref({});
 const isJsonValid = ref();
@@ -58,17 +62,23 @@ function getFormData() {
 
 function beautify() {
     if(!isJsonValid.value) return;
-    formJson.value = JSON.stringify(JSON.parse(formJson.value), theReplacer(), 4);
+    formJson.value = JSON.stringify(JSON.parse(formJson.value), null, 4);
+}
+
+function clean() {
+    if(!isJsonValid.value) return;
+    formJson.value = JSON.stringify(JSON.parse(formJson.value), theReplacer, 4);
 }
 
 const allowedKeys = new Set([
-    "id", "title", "sections", "questions", "model-name", "label", "component", "default", "placeholder", "options", "value"
+    "id", "title", "sections", "questions", "model-name", "label", "component", "default", "placeholder", "options", "value", "required", "dependency"
 ]);
 
 function theReplacer(key, value) {
     if (key === "") return value;
+    if (!isNaN(key)) return value;
     if(allowedKeys.has(key)) return value;
-    if(key.startsWith("sections") || key.startsWith("questions")) {
+    if(typeof key !== 'undefined' && (key.startsWith("sections") || key.startsWith("questions"))) {
         return value;
     }
     return undefined;
@@ -92,6 +102,11 @@ getFormData();
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.json-buttons {
+    display: flex;
+    gap: 0.5em;
 }
 
 button {

@@ -1,18 +1,16 @@
 <template>
     <div class="radio-container">
-        <label class="radio-input-container" v-for="option in getOptions" :key="option.value">       
-            <input type="radio" class="radio-button" :value="option.value" v-model="formModel[details['model-name']]" />
-            <label class="radio-label" for="one">{{ option.label }}</label>
+        <label class="radio-input-container" v-for="option in getOptions" :name="details['model-name']" :key="option.value">       
+            <input type="radio" class="radio-button" :id="option.label + '-' + option.value" :value="option.value" v-model="formModel[details['model-name']]" />
+            <span class="radio-label" @click="clickRadio(option);">{{ option.label }}</span>
         </label>
     </div>
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue'
+import { inject, computed } from 'vue'
 
-const formModel = inject('formModel');
-
-const value = ref('');
+const { formModel, updateformModel } = inject('model');
 
 const props = defineProps({
     details: {
@@ -25,6 +23,11 @@ const getOptions = computed(() => {
     if (props.details.hasOwnProperty('options')) return props.details.options;
     return [];
 })
+
+function clickRadio(option) {
+    var id = option.label + '-' + option.value;
+    document.getElementById(id).click();
+}
 </script>
 
 <style scoped>

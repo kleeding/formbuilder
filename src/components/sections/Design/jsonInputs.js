@@ -32,7 +32,7 @@ export const example = (`{
                 {
                     "id": "1.2",
                     "model-name": "q1.2",
-                    "label": "This is a select?",
+                    "label": "This is a radio?",
                     "component": "radio",
                     "default": "1",
                     "options": [
@@ -157,3 +157,73 @@ export const example = (`{
         }
     ]
 }`);
+
+
+export const example2 = (`[
+    {
+        "id": "1",
+        "model-name": "q1",
+        "required": "true",
+        "label": "This is a radio question?",
+        "component": "radio",
+        "default": "0",
+        "options": [
+            {
+                "label": "Yes",
+                "value": "1"
+            },
+            {
+                "label": "No",
+                "value": "0"
+            }
+        ],
+        "questions": [
+            {
+                "id": "1.1",
+                "model-name": "q1.1",
+                "label": "This is a textarea question?",
+                "component": "textarea",
+                "placeholder": "This is placeholder text",
+                "dependency": "1"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "model-name": "q2",
+        "label": "This is a text question?",
+        "component": "text",
+        "placeholder": "This is placeholder text"
+    },
+    {
+        "id": "3",
+        "model-name": "q3",
+        "label": "This is a textarea question?",
+        "component": "textarea",
+        "default": "This is a default value"
+    },
+    {
+        "id": "4",
+        "model-name": "q4",
+        "label": "This is a select question?",
+        "component": "select",
+        "options": [
+            {
+                "label": "Please Select",
+                "value": "0"
+            },
+            {
+                "label": "One",
+                "value": "1"
+            },
+            {
+                "label": "Two",
+                "value": "2"
+            },
+            {
+                "label": "Three",
+                "value": "3"
+            }
+        ]
+    }
+]`);

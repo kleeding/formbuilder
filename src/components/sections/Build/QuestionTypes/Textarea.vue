@@ -1,11 +1,11 @@
 <template>
-    <input type="text" v-model="formModel[details['model-name']]" :name="details['model-name']" :placeholder="getPlaceholder" />
+    <textarea v-model="formModel[details['model-name']]" :name="details['model-name']" :placeholder="getPlaceholder" />
 </template>
 
 <script setup>
 import { inject, computed } from 'vue'
 
-const { formModel, updateformModel } = inject('model');
+const { formModel, updateFormModel } = inject('model');
 
 const props = defineProps({
     details: {

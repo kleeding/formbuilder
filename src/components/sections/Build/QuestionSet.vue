@@ -1,30 +1,36 @@
 <template>
-    <div v-if="isEnabled ?? true" v-for="question in questions" :key="question.id" class="form-question">
-        <label class="question-label">
-            {{ question.id + " " + question.label }}
-            <div v-if="question.required === 'true'" class="required">*</div>
-        </label>
+    <div v-for="question in questions" :key="question.id" class="form-question">
+        <div v-if="isEnabled(question)">
+            <label >
+                <div class="question-label">
+                    {{ question.id + " " + question.label }}
+                    <div v-if="question.required === 'true'" class="required">*</div>
+                </div>
+                <component :is="getComponent(question)" :details="question"></component>
+            </label>
 
-        <component :is="getComponent(question)" :details="question"></component>
-        
-        <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions"/>
+            <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)"/>
+        </div>
     </div>
 </template>
 
 <script setup>
+import { inject } from 'vue';
 import Text from './QuestionTypes/Text.vue';
+import Textarea from './QuestionTypes/Textarea.vue';
 import Select from './QuestionTypes/Select.vue';
 import Radio from './QuestionTypes/Radio.vue';
 import Unknown from './QuestionTypes/Unknown.vue';
+
+const { formModel, updateFormModel } = inject('model');
 
 const props = defineProps({
     questions: {
         type: Object,
         required: true
     },
-    isEnabled: {
-        type: Boolean,
-        default: true,
+    parentValue: {
+        type: String,
         required: false
     }
 })
@@ -35,7 +41,7 @@ function getComponent(question) {
         case 'text':
             return Text;
         case 'textarea':
-            return 'TextArea';
+            return Textarea;
         case 'select':
             return Select;
         case 'radio':
@@ -47,6 +53,21 @@ function getComponent(question) {
 
 function hasFurtherQuestions(question) {
     return question.hasOwnProperty('questions');
+}
+
+function parentValue(question) {
+    return formModel.value[question['model-name']];
+};
+
+function isEnabled(question) {
+    if(typeof props.parentValue === 'undefined') return true; // parent question has no value to compare against
+    if(typeof question.dependency === 'undefined') return true; // child component does not depend on parent value
+    var isEnabled = question.dependency === props.parentValue;
+    // if child is not enabled - make sure it's model value is reset to default value
+    if(!isEnabled) {
+        updateFormModel(question['model-name'], question.default ?? question.component === 'select' ? 0 : "");
+    }
+    return isEnabled;
 }
 </script>
 

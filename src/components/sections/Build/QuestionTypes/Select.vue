@@ -1,5 +1,5 @@
 <template>
-    <select v-model="formModel[details['model-name']]">
+    <select v-model="formModel[details['model-name']]" :name="details['model-name']" >
         <option v-for="option in getOptions" :value="option.value">
             {{ option.label }}
         </option>
@@ -9,7 +9,7 @@
 <script setup>
 import { inject, computed } from 'vue'
 
-const formModel = inject('formModel');
+const { formModel, updateformModel } = inject('model');
 
 const props = defineProps({
     details: {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
 import Design from './components/sections/Design.vue'
@@ -13,6 +13,15 @@ const activeViews = ref({
 
 const formData = ref({});
 const formModel = ref({});
+
+provide('model', {
+    formModel,
+    updateFormModel
+});
+
+function updateFormModel(name, newValue) {
+  if(formModel.value.hasOwnProperty(name)) formModel.value[name] = newValue;
+}
 </script>
 
 <template>

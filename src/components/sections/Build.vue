@@ -4,7 +4,11 @@
 
         <div v-if="hasTitle" class="form-title">{{ formData.title }}</div>
 
-        <div v-for="(field, index) in formData">
+        <div v-if="isArray" class="form-section">
+            <QuestionSet :questions="formData"/>
+        </div>
+
+        <div v-else v-for="(field, index) in formData">
             <div v-if="isPrefixed(index, 'sections')" v-for="section in field" :key="section.id" class="form-section">
                 <div class="section-title">{{section.title}}</div>
                 <QuestionSet :questions="section.questions"/>
@@ -27,8 +31,6 @@ import { ref, toRefs, provide, computed, watch } from 'vue'
 import QuestionSet from './Build/QuestionSet.vue'
 
 const currentFormModel = ref({});
-
-provide('formModel', currentFormModel);
 
 const props = defineProps({
     formModel: {
@@ -65,6 +67,10 @@ function replaceValues(model){
     return model;
 }
 
+const isArray = computed(() => {
+    return Array.isArray(props.formData);
+});
+
 function isPrefixed(str, prefix) {
     return str.startsWith(prefix);
 }
@@ -74,18 +80,25 @@ const hasTitle = computed(() => {
 })
 
 function createFormModel(){
+    if(Array.isArray(props.formData)){
+        return searchStack([...props.formData]);
+    }
+    else {
+        return searchStack([props.formData]);
+    }
+    
+}
+
+function searchStack(stack) {
     var model = {};
-    const stack = [props.formData];
     while (stack?.length > 0) {
-        const currentObj = stack.pop();
+        var currentObj = stack.pop();
+        if(currentObj.hasOwnProperty('model-name')){
+            var defaultValue = currentObj.default ?? (currentObj.component === 'select' ? 0 : "");
+            model[currentObj['model-name']] = defaultValue;
+        }
         Object.keys(currentObj).forEach(key => {
             if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
-                if (key.startsWith("questions")){
-                    currentObj[key].forEach((question) => {
-                        var defaultValue = question.default ?? (question.component === 'select' ? 0 : "");
-                        model[question['model-name']] = defaultValue;
-                    })
-                }
                 stack.push(currentObj[key]);
             }
         });
