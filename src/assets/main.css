@@ -16,11 +16,26 @@ section {
   border-radius: 20px;
 }
 
+label {
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
 input,
 textarea,
 select {
   background-color: var(--color-background-chill);
   color: var(--color-text);
+  width: 100%;
+  font-family: lexend;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+  flex-grow: 1;
 }
 
 input::placeholder {
@@ -48,23 +63,4 @@ textarea::-webkit-scrollbar-thumb {
 
 textarea::-webkit-resizer {
   background-color: var(--color-background-chill);
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  /* body {
-    display: flex;
-    place-items: center;
-  } */
-
-  /* #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  } */
 }

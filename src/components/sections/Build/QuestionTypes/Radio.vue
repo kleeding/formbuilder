@@ -1,15 +1,16 @@
 <template>
     <div class="radio-container">
-        <label class="radio-input-container" v-for="option in getOptions" :key="option.value">
-            <input v-if="details.default === option.value" type="radio" class="radio-button" :name="option.value" :value="option.value" v-model="value" checked />
-            <input v-else type="radio" class="radio-button" :name="option.value" :value="option.value" v-model="value" />
+        <label class="radio-input-container" v-for="option in getOptions" :key="option.value">       
+            <input type="radio" class="radio-button" :value="option.value" v-model="formModel[details['model-name']]" />
             <label class="radio-label" for="one">{{ option.label }}</label>
         </label>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, inject, computed } from 'vue'
+
+const formModel = inject('formModel');
 
 const value = ref('');
 

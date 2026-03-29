@@ -69,5 +69,6 @@ body {
 *::after {
   box-sizing: border-box;
   margin: 0;
+  font-family: lexend;
   font-weight: normal;
 }

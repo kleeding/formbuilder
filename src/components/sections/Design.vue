@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onBeforeMount } from 'vue'
+import { ref, watch } from 'vue'
 import { example } from './Design/jsonInputs';
 
 const formJson = ref(example);

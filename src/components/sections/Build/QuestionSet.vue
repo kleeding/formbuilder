@@ -30,6 +30,7 @@ const props = defineProps({
 })
 
 function getComponent(question) {
+    if(!question.hasOwnProperty('component')) return Unknown;
     switch (question.component.toLowerCase()) {
         case 'text':
             return Text;

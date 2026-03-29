@@ -1,9 +1,11 @@
 <template>
-    <input type="text" :placeholder="getPlaceholder"/>
+    <input type="text" v-model="formModel[details['model-name']]" :placeholder="getPlaceholder" />
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { inject, computed } from 'vue'
+
+const formModel = inject('formModel');
 
 const props = defineProps({
     details: {

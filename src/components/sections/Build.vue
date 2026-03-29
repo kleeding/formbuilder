@@ -16,56 +16,71 @@
         </div>
 
         <div class="submit-row">
-            <button type="submit" @click="console.log('clicked submit')" class="submit-btn">Submit Form</button>
+            <button type="submit" @click="console.log('TIME TO VALIDATE')" class="submit-btn">Submit Form</button>
         </div>
       </form>
     </section>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, toRefs, provide, computed, watch } from 'vue'
 import QuestionSet from './Build/QuestionSet.vue'
 
-const formModel = ref({});
+const currentFormModel = ref({});
+
+provide('formModel', currentFormModel);
 
 const props = defineProps({
-    formData: {
+    formModel: {
         type: Object,
         required: true
     },
-    formResult: {
+    formData: {
         type: Object,
         required: true
     }
 })
+const formDataRef = toRefs(props).formData;
 
-const emits = defineEmits(['update:formResult'])
+const emits = defineEmits(['update:formModel'])
 
-const hasTitle = computed(() => {
-    return props.formData.hasOwnProperty('title');
+watch(formDataRef, () => {
+    getFormModel();
 })
+
+watch(currentFormModel, (newFormModel) => {
+    emits('update:formModel', newFormModel);
+})
+
+function getFormModel() {
+    var newModel = createFormModel();
+    newModel = replaceValues(newModel);
+    return currentFormModel.value = newModel;
+}
+
+function replaceValues(model){
+    Object.keys(currentFormModel.value).forEach(key => {
+        if(model.hasOwnProperty(key)) model[key] = currentFormModel.value[key];
+    });
+    return model;
+}
 
 function isPrefixed(str, prefix) {
     return str.startsWith(prefix);
 }
 
-function getFormResult() {
-    return formModel.value;
-}
-
-watch(formModel, () => {
-    emits('update:formResult', getFormResult());
+const hasTitle = computed(() => {
+    return props.formData.hasOwnProperty('title');
 })
 
-// const formModel = ref(setupFormModel());
-function initFormModel(){
+function createFormModel(){
     var model = {};
-    const stack = [props.formData.value];
+    const stack = [props.formData];
     while (stack?.length > 0) {
         const currentObj = stack.pop();
         Object.keys(currentObj).forEach(key => {
             if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
-                if (key === 'questions'){
+                if (key.startsWith("questions")){
                     currentObj[key].forEach((question) => {
                         var defaultValue = question.default ?? (question.component === 'select' ? 0 : "");
                         model[question['model-name']] = defaultValue;
@@ -75,10 +90,8 @@ function initFormModel(){
             }
         });
     }
-    formModel.value = model;
+    return model;
 }
-
-// initFormModel();
 </script>
 
 <style scoped>
@@ -94,8 +107,10 @@ function initFormModel(){
 
 .form-title {
     justify-self: center;
+    max-width: 100%;
     font-size: 1.75rem;
     font-weight: 700;
+    overflow-wrap: break-word;
 }
 
 .form-section {
@@ -112,14 +127,24 @@ function initFormModel(){
 }
 
 .section-title {
+    max-width: 100%;
     font-size: 1.25rem;
+    overflow-wrap: break-word;
+}
+
+.submit-row {
+    display: flex;
+    justify-content: center;
 }
 
 .submit-btn {
-    border: 1px solid var(--vt-c-soft);
     background: var(--vt-c-mute);
+    border: 1px solid var(--vt-c-soft);
+    cursor: pointer;
     color: var(--color-text);
     font-size: 12px;
+    font-weight: 600;
+    padding: 10px 20px;
 }
 
 .submit-btn:hover {

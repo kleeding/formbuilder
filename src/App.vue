@@ -12,7 +12,7 @@ const activeViews = ref({
 })
 
 const formData = ref({});
-const formResult = ref({});
+const formModel = ref({});
 </script>
 
 <template>
@@ -29,12 +29,10 @@ const formResult = ref({});
       v-model:formData="formData"
     />
 
-    <!-- :is-form-invalid="!formData.valid" -->
-
     <Build
       v-if="activeViews.build === true"
-      v-model:formResult="formResult"
-      :form-data="formData"
+      v-model:formModel="formModel"
+      :formData="formData"
     />
 
     <!-- <section v-if="activeViews.output === true" class="build-view"> -->
@@ -55,52 +53,5 @@ const formResult = ref({});
   justify-content: center;
   gap: 1em;
   padding: 1em;
-}
-
-textarea {
-  width: 100%;
-  font-family: lexend;
-  padding: 10px;
-  resize: vertical;
-  flex-grow: 1;
-  /* box-sizing: border-box; */
-  /* margin: auto; */
-}
-
-.form-text {
-  width: 100%;
-  min-height: 200px;
-  font-family: lexend;
-  padding: 10px;
-  box-sizing: border-box;
-  margin: auto;
-  min-width: 100%;
-  max-width: 100%;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-label { font-weight: bold; margin-bottom: 0.5rem; }
-
-.submit-row {
-  display: flex;
-  justify-content: center;
-}
-
-.submit-btn {
-  padding: 10px 20px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  background: white;
-  min-width: 90px;
-  text-align: center;
-  font-family: lexend;
-  font-weight: 600;
-  background: #35495e;
-  color: white;
 }
 </style>
