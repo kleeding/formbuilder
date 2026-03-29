@@ -45,18 +45,17 @@ const getOptions = computed(() => {
     border: 2px solid var(--color-background-chill);
     border-radius: 50%;
     background: var(--color-background-chill) no-repeat center center;
-
     margin-right: 5px;
     vertical-align: middle;
 }
 
 .radio-button:where(:active, :hover) {
-  border-color: var(--color-button-border);
-  outline: none;
+    border-color: var(--color-button-border);
+    outline: none;
 }
 
 .radio-button:checked {
-  background-color: var(--color-button-border);
+    background-color: var(--color-button-border);
 }
 
 .radio-label {

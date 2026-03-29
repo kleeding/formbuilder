@@ -1,24 +1,19 @@
 <template>
-    <section v-if="isEnabled" class="build-view">
+    <section class="build-view">
         <form @submit.prevent>
 
         <div v-if="hasTitle" class="form-title">{{ formData.title }}</div>
 
-        <!-- 
-        GOING TO CHANGE THIS SO THAT IT GOES THROUGH THE OBJECT ONE BY ONE 
-        - IF SECTION THEN RUN SECTION COMPONENT
-        - IF QUESTION THEN RUN QUESTION
-        THIS WAY WE CAN HAVE LAYERED SECTIONS AND NON-SECTIONS
-        - THIS MEANS WE CAN START WITH A NON-SECTION, END OF A NON-SECTION, 
-          AND ANY OTHER COMBINATION OF NON-SECTION/SECTIONS
-        -->
+        <div v-for="(field, index) in formData">
+            <div v-if="isPrefixed(index, 'sections')" v-for="section in field" :key="section.id" class="form-section">
+                <div class="section-title">{{section.title}}</div>
+                <QuestionSet :questions="section.questions"/>
+            </div>
 
-        <div v-for="section in formData.sections" :key="section.id" class="form-section">
-            <div class="section-title">{{section.title}}</div>
-            <QuestionSet :questions="section.questions"/>
+            <div v-else-if="isPrefixed(index, 'questions')" class="form-section">
+                <QuestionSet :questions="field"/>
+            </div>
         </div>
-
-        <QuestionSet :questions="formData.questions"/>
 
         <div class="submit-row">
             <button type="submit" @click="console.log('clicked submit')" class="submit-btn">Submit Form</button>
@@ -28,28 +23,68 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import QuestionSet from './Build/QuestionSet.vue'
+
+const formModel = ref({});
 
 const props = defineProps({
     formData: {
         type: Object,
         required: true
     },
-    isEnabled: {
-        type: Boolean,
+    formResult: {
+        type: Object,
         required: true
     }
 })
 
+const emits = defineEmits(['update:formResult'])
+
 const hasTitle = computed(() => {
     return props.formData.hasOwnProperty('title');
 })
+
+function isPrefixed(str, prefix) {
+    return str.startsWith(prefix);
+}
+
+function getFormResult() {
+    return formModel.value;
+}
+
+watch(formModel, () => {
+    emits('update:formResult', getFormResult());
+})
+
+// const formModel = ref(setupFormModel());
+function initFormModel(){
+    var model = {};
+    const stack = [props.formData.value];
+    while (stack?.length > 0) {
+        const currentObj = stack.pop();
+        Object.keys(currentObj).forEach(key => {
+            if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
+                if (key === 'questions'){
+                    currentObj[key].forEach((question) => {
+                        var defaultValue = question.default ?? (question.component === 'select' ? 0 : "");
+                        model[question['model-name']] = defaultValue;
+                    })
+                }
+                stack.push(currentObj[key]);
+            }
+        });
+    }
+    formModel.value = model;
+}
+
+// initFormModel();
 </script>
 
 <style scoped>
 .build-view {
     background-color: var(--color-border);
+    width: 100%;
     flex-grow: 1;
     padding: 1em;
     border-radius: 20px;
@@ -64,9 +99,16 @@ const hasTitle = computed(() => {
 }
 
 .form-section {
+    background-color: var(--vt-c-mute);
     display: flex;
     flex-direction: column;
-    margin: 2em 0 2em 0;
+    margin: 1em 0 1em 0;
+    padding: 1em;
+    border-radius: 20px;
+}
+
+.section-separator {
+    margin: 1em 0;
 }
 
 .section-title {
@@ -78,7 +120,6 @@ const hasTitle = computed(() => {
     background: var(--vt-c-mute);
     color: var(--color-text);
     font-size: 12px;
-    margin: 1em 0 0 0;
 }
 
 .submit-btn:hover {
