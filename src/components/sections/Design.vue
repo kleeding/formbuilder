@@ -27,9 +27,9 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { example, example2 } from './Design/jsonInputs';
+import { example, example2 } from '../javascript/jsonInputs';
 
-const formJson = ref(example2);
+const formJson = ref(example);
 // Memory of the form data so if there is an error last non-error form builds
 const currentFormData = ref({});
 const isJsonValid = ref();

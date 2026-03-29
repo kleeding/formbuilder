@@ -34,7 +34,7 @@ export const example = (`{
                     "model-name": "q1.2",
                     "label": "This is a radio?",
                     "component": "radio",
-                    "default": "1",
+                    "default": "0",
                     "options": [
                         {
                             "label": "Yes",
@@ -43,6 +43,17 @@ export const example = (`{
                         {
                             "label": "No",
                             "value": "0"
+                        }
+                    ],
+                    "questions": [
+                        {
+                            "id": "1.2.1",
+                            "model-name": "q1.2.1",
+                            "label": "Further information",
+                            "component": "textarea",
+                            "placeholder": "placeholder text goes here",
+                            "required": "true",
+                            "dependency": "1"
                         }
                     ]
                 }
@@ -147,11 +158,51 @@ export const example = (`{
                             "value": "2"
                         },
                         {
-                            "label": "Three",
+                            "label": "Other",
                             "value": "3"
                         }
                     ],
-                    "required": "true"
+                    "required": "true",
+                    "questions": [
+                        {
+                            "id": "4.1.1",
+                            "model-name": "q4.1.1",
+                            "label": "What do you mean 'One'?",
+                            "component": "text",
+                            "placeholder": "placeholder text goes here",
+                            "required": "true",
+                            "dependency": "1"
+                        },
+                        {
+                            "id": "4.1.2",
+                            "model-name": "q4.1.2",
+                            "label": "Confirm your choice",
+                            "component": "radio",
+                            "placeholder": "placeholder text goes here",
+                            "required": "true",
+                            "dependency": "2",
+                            "default": "1",
+                            "options": [
+                                {
+                                    "label": "Yes",
+                                    "value": "1"
+                                },
+                                {
+                                    "label": "No",
+                                    "value": "0"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "4.1.3",
+                            "model-name": "q4.1.3",
+                            "label": "Further information",
+                            "component": "textarea",
+                            "placeholder": "placeholder text goes here",
+                            "required": "true",
+                            "dependency": "3"
+                        }
+                    ]
                 }
             ]
         }

@@ -1,13 +1,11 @@
 <template>
     <div v-for="question in questions" :key="question.id" class="form-question">
-        <div v-if="isEnabled(question)">
-            <label >
-                <div class="question-label">
-                    {{ question.id + " " + question.label }}
-                    <div v-if="question.required === 'true'" class="required">*</div>
-                </div>
-                <component :is="getComponent(question)" :details="question"></component>
-            </label>
+        <div v-if="isEnabled(question)"> 
+            <div class="question-label">
+                {{ question.id + " " + question.label }}
+                <div v-if="question.required === 'true'" class="required">*</div>
+            </div>
+            <component :is="getComponent(question)" :details="question"></component>
 
             <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)"/>
         </div>
@@ -16,6 +14,7 @@
 
 <script setup>
 import { inject } from 'vue';
+import { getDefault } from '../../javascript/getDefaults';
 import Text from './QuestionTypes/Text.vue';
 import Textarea from './QuestionTypes/Textarea.vue';
 import Select from './QuestionTypes/Select.vue';
@@ -65,7 +64,8 @@ function isEnabled(question) {
     var isEnabled = question.dependency === props.parentValue;
     // if child is not enabled - make sure it's model value is reset to default value
     if(!isEnabled) {
-        updateFormModel(question['model-name'], question.default ?? question.component === 'select' ? 0 : "");
+        var defaultValue = getDefault(question);
+        updateFormModel(question['model-name'], defaultValue);
     }
     return isEnabled;
 }

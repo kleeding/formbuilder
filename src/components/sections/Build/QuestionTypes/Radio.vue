@@ -1,9 +1,9 @@
 <template>
     <div class="radio-container">
-        <label class="radio-input-container" v-for="option in getOptions" :name="details['model-name']" :key="option.value">       
-            <input type="radio" class="radio-button" :id="option.label + '-' + option.value" :value="option.value" v-model="formModel[details['model-name']]" />
-            <span class="radio-label" @click="clickRadio(option);">{{ option.label }}</span>
-        </label>
+        <div class="radio-input-container" v-for="option in getOptions" :name="details['model-name']" :key="option.value">       
+            <input type="radio" class="radio-button" :id="details['model-name'] + '-' + option.value" :value="option.value" v-model="formModel[details['model-name']]" />
+            <span class="radio-label" @click="clickRadio(option.value)">{{ option.label }}</span>
+        </div>
     </div>
 </template>
 
@@ -24,8 +24,8 @@ const getOptions = computed(() => {
     return [];
 })
 
-function clickRadio(option) {
-    var id = option.label + '-' + option.value;
+function clickRadio(value) {
+    var id = props.details['model-name'] + '-' + value;
     document.getElementById(id).click();
 }
 </script>
@@ -63,6 +63,7 @@ function clickRadio(option) {
 }
 
 .radio-label {
+    cursor: default;
     vertical-align: middle;
 }
 </style>

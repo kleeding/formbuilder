@@ -27,7 +27,8 @@
 </template>
 
 <script setup>
-import { ref, toRefs, provide, computed, watch } from 'vue'
+import { ref, toRefs, computed, watch } from 'vue'
+import { getDefault } from '../javascript/getDefaults';
 import QuestionSet from './Build/QuestionSet.vue'
 
 const currentFormModel = ref({});
@@ -86,7 +87,6 @@ function createFormModel(){
     else {
         return searchStack([props.formData]);
     }
-    
 }
 
 function searchStack(stack) {
@@ -94,7 +94,7 @@ function searchStack(stack) {
     while (stack?.length > 0) {
         var currentObj = stack.pop();
         if(currentObj.hasOwnProperty('model-name')){
-            var defaultValue = currentObj.default ?? (currentObj.component === 'select' ? 0 : "");
+            var defaultValue = getDefault(currentObj);
             model[currentObj['model-name']] = defaultValue;
         }
         Object.keys(currentObj).forEach(key => {
