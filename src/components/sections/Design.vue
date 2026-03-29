@@ -66,7 +66,10 @@ function beautify() {
 }
 
 function clean() {
-    if(!isJsonValid.value) return;
+    if(!isJsonValid.value) {
+        // if json is invalid - return most recently valid json
+        formJson.value = JSON.stringify(currentFormData.value, theReplacer, 4);
+    };
     formJson.value = JSON.stringify(JSON.parse(formJson.value), theReplacer, 4);
 }
 
@@ -110,6 +113,7 @@ getFormData();
 }
 
 button {
+    cursor: pointer;
     border: 1px solid var(--vt-c-soft);
     background: var(--vt-c-mute);
     color: var(--color-text);

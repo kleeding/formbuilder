@@ -155,17 +155,19 @@ onMounted(() => {
 }
 
 .submit-btn {
-    background: var(--vt-c-mute);
+    background-color: var(--vt-c-mute);
     border: 1px solid var(--vt-c-soft);
     cursor: pointer;
     color: var(--color-text);
     font-size: 12px;
     font-weight: 600;
     padding: 10px 20px;
+    transition: 1s;
 }
 
-.submit-btn:hover {
+.submit-btn:active {
     border: 1px solid var(--color-button-border);
-    background: var(--color-button);
+    background-color: var(--color-button);
+    transition: 50ms;
 }
 </style>

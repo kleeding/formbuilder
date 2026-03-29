@@ -80,7 +80,11 @@ function isEnabled(question) {
 }
 
 .question-label {
+    max-width: 100%;
     display: flex;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    overflow-wrap: break-word;
 }
 
 .required {

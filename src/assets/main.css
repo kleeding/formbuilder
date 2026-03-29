@@ -30,12 +30,23 @@ select {
   color: var(--color-text);
   width: 100%;
   font-family: lexend;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 
 textarea {
   min-height: 100px;
   resize: vertical;
   flex-grow: 1;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  border-color: var(--color-button-border);
+  outline: none;
 }
 
 input::placeholder,
