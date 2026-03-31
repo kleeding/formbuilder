@@ -80,7 +80,11 @@ export const example = (`{
                             "component": "text",
                             "placeholder": "placeholder text goes here",
                             "required": "true",
-                            "dependency": "1"
+                            "dependency": "1",
+                            "validation": [
+                                "nonempty",
+                                "alphanumeric"
+                            ]
                         },
                         {
                             "id": "2.1.2",

@@ -7,7 +7,7 @@
             </div>
             <component :is="getComponent(question)" :details="question" :options="getOptions(question)" :validate="validate"></component>
 
-            <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)" :options="options"/>
+            <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)" :options="options" :validate="validate"/>
         </div>
     </div>
 </template>
