@@ -68,24 +68,24 @@ function beautify() {
 function clean() {
     if(!isJsonValid.value) {
         // if json is invalid - return most recently valid json
-        formJson.value = JSON.stringify(currentFormData.value, theReplacer, 4);
+        formJson.value = JSON.stringify(currentFormData.value, null, 4);
     };
-    formJson.value = JSON.stringify(JSON.parse(formJson.value), theReplacer, 4);
+    formJson.value = JSON.stringify(JSON.parse(formJson.value), null, 4);
 }
 
-const allowedKeys = new Set([
-    "id", "title", "sections", "questions", "model-name", "label", "component", "default", "placeholder", "options", "value", "required", "dependency"
-]);
+// const allowedKeys = new Set([
+//     "id", "title", "sections", "questions", "model-name", "label", "component", "default", "placeholder", "options", "value", "required", "dependency"
+// ]);
 
-function theReplacer(key, value) {
-    if (key === "") return value;
-    if (!isNaN(key)) return value;
-    if(allowedKeys.has(key)) return value;
-    if(typeof key !== 'undefined' && (key.startsWith("sections") || key.startsWith("questions"))) {
-        return value;
-    }
-    return undefined;
-}
+// function theReplacer(key, value) {
+//     if (key === "") return value;
+//     if (!isNaN(key)) return value;
+//     if(allowedKeys.has(key)) return value;
+//     if(typeof key !== 'undefined' && (key.startsWith("sections") || key.startsWith("questions"))) {
+//         return value;
+//     }
+//     return undefined;
+// }
 
 getFormData();
 </script>

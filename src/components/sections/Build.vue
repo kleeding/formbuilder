@@ -1,26 +1,15 @@
 <template>
     <section class="build-view">
         <form @submit.prevent>
-
         <div v-if="hasTitle" class="form-title">{{ formData.title }}</div>
 
-        <div v-if="isArray" class="form-section">
-            <QuestionSet :questions="formData"/>
-        </div>
-
-        <div v-else v-for="(field, index) in formData">
-            <div v-if="isPrefixed(index, 'sections')" v-for="section in field" :key="section.id" class="form-section">
-                <div class="section-title">{{section.title}}</div>
-                <QuestionSet :questions="section.questions"/>
-            </div>
-
-            <div v-else-if="isPrefixed(index, 'questions')" class="form-section">
-                <QuestionSet :questions="field"/>
-            </div>
+        <div v-if="hasSections" v-for="(section, index) in formData.sections" class="form-section">
+            <div class="section-title">{{section.title}}</div>
+            <QuestionSet v-if="hasQuestions(section)" :questions="section.questions" :options="formData.options" :validate="validate"/>
         </div>
 
         <div class="submit-row">
-            <button type="submit" @click="console.log('TIME TO VALIDATE')" class="submit-btn">Submit Form</button>
+            <button type="submit" @click="toggleValidate()" class="submit-btn">{{"Submit Form"}}</button>
         </div>
       </form>
     </section>
@@ -32,6 +21,7 @@ import { getDefault } from '../javascript/getDefaults';
 import QuestionSet from './Build/QuestionSet.vue'
 
 const currentFormModel = ref({});
+const validate = ref(false);
 
 const props = defineProps({
     formModel: {
@@ -43,6 +33,7 @@ const props = defineProps({
         required: true
     }
 })
+
 const formDataRef = toRefs(props).formData;
 
 const emits = defineEmits(['update:formModel'])
@@ -68,17 +59,17 @@ function replaceValues(model){
     return model;
 }
 
-const isArray = computed(() => {
-    return Array.isArray(props.formData);
-});
-
-function isPrefixed(str, prefix) {
-    return str.startsWith(prefix);
-}
-
 const hasTitle = computed(() => {
     return props.formData.hasOwnProperty('title');
 })
+
+const hasSections = computed(() => {
+    return props.formData.hasOwnProperty('sections');
+});
+
+function hasQuestions(section){
+    return section.hasOwnProperty('questions');
+}
 
 function createFormModel(){
     if(Array.isArray(props.formData)){
@@ -103,7 +94,12 @@ function searchStack(stack) {
             }
         });
     }
+    model.valid = false;
     return model;
+}
+
+function toggleValidate() {
+    validate.value = !validate.value;
 }
 
 onMounted(() => {

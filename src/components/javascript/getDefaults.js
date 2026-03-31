@@ -12,5 +12,6 @@ const typeDefaults = {
     'text': "",
     'textarea': "",
     'radio': "1",
-    'select': "0"
+    'select': "0",
+    'checkbox': []
 }

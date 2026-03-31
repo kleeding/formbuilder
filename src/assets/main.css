@@ -76,3 +76,11 @@ textarea::-webkit-scrollbar-thumb {
 textarea::-webkit-resizer {
   background-color: var(--color-background-chill);
 }
+
+.validation-errors {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  color: var(--color-button-border);
+}
