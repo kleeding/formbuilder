@@ -13,5 +13,6 @@ const typeDefaults = {
     'textarea': "",
     'radio': "1",
     'select': "0",
-    'checkbox': []
+    'checkbox': [],
+    'date': new Date().toISOString().slice(0, 10)
 }

@@ -5,9 +5,9 @@
                 {{ question.id + " " + question.label }}
                 <div v-if="question.required === 'true'" class="required">*</div>
             </div>
-            <component :is="getComponent(question)" :details="question" :options="getOptions(question)" :validate="validate"></component>
+            <component :is="getComponent(question)" :details="question" :options="getOptions(question)" :enableErrors="enableErrors"></component>
 
-            <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)" :options="options" :validate="validate"/>
+            <QuestionSet v-if="hasFurtherQuestions(question)" :questions="question.questions" :parent-value="parentValue(question)" :options="options" :enableErrors="enableErrors"/>
         </div>
     </div>
 </template>
@@ -39,8 +39,8 @@ const props = defineProps({
         type: String,
         required: false
     },
-    validate: {
-        type: Boolean,
+    enableErrors: {
+        type: Number,
         default: false,
         required: false
     }
@@ -71,7 +71,7 @@ function hasFurtherQuestions(question) {
 }
 
 function parentValue(question) {
-    return formModel.value[question['model-name']];
+    return formModel.value[question['model-name']].value;
 };
 
 function getOptions(question){

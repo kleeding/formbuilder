@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { example, example2 } from '../javascript/jsonInputs';
+import { example } from '../javascript/jsonInputs';
 
 const formJson = ref(example);
 // Memory of the form data so if there is an error last non-error form builds

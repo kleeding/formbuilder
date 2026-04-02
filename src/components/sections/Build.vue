@@ -1,27 +1,48 @@
 <template>
-    <section class="build-view">
-        <form @submit.prevent>
+    <section v-if="!submit" class="build-view">
         <div v-if="hasTitle" class="form-title">{{ formData.title }}</div>
+        <form @submit.prevent>
+            <div v-if="hasSections" v-for="(section, index) in formData.sections" class="form-section">
+                <div class="section-title">{{section.title}}</div>
+                <QuestionSet v-if="hasQuestions(section)" :questions="section.questions" :options="formData.options" :enableErrors="enableErrors"/>
+            </div>
 
-        <div v-if="hasSections" v-for="(section, index) in formData.sections" class="form-section">
-            <div class="section-title">{{section.title}}</div>
-            <QuestionSet v-if="hasQuestions(section)" :questions="section.questions" :options="formData.options" :validate="validate"/>
+            <div class="submit-row">
+                <button v-if="enableErrors > 0" type="button" @click="resetValidation()" class="submit-btn">{{"Reset Validation"}}</button>
+                <button type="button" @click="submitForm()" class="submit-btn">{{"Submit Form"}}</button>
+            </div>
+        </form>
+    </section>
+
+    <section v-if="submit" class="model-view">
+        <div class="model-container">
+            <div class="model-name-container">
+                <span>Field Name</span>
+                <div v-for="(value, index) in formattedFormModel()">
+                    {{ index }}
+                </div>
+            </div>
+            <div class="model-value-container">
+                <span>Value</span>
+                <div v-for="(value) in formattedFormModel()">
+                    {{ value == "" ? "-" : value }}
+                </div>
+            </div>
         </div>
-
         <div class="submit-row">
-            <button type="submit" @click="toggleValidate()" class="submit-btn">{{"Submit Form"}}</button>
+            <button type="button" @click="returnToForm()" class="submit-btn">{{"<< Return"}}</button>
         </div>
-      </form>
     </section>
 </template>
 
 <script setup>
-import { ref, toRefs, computed, watch, onMounted } from 'vue'
-import { getDefault } from '../javascript/getDefaults';
+import { ref, toRefs, computed, watch } from 'vue'
+import { createModel } from '../javascript/model';
 import QuestionSet from './Build/QuestionSet.vue'
 
 const currentFormModel = ref({});
-const validate = ref(false);
+const enableErrors = ref(0);
+const submit = ref(false);
 
 const props = defineProps({
     formModel: {
@@ -39,25 +60,12 @@ const formDataRef = toRefs(props).formData;
 const emits = defineEmits(['update:formModel'])
 
 watch(formDataRef, () => {
-    getFormModel();
+    createModel(props.formData, currentFormModel);
 })
 
 watch(currentFormModel, (newFormModel) => {
     emits('update:formModel', newFormModel);
 })
-
-function getFormModel() {
-    var newModel = createFormModel();
-    newModel = replaceValues(newModel);
-    return currentFormModel.value = newModel;
-}
-
-function replaceValues(model){
-    Object.keys(currentFormModel.value).forEach(key => {
-        if(model.hasOwnProperty(key)) model[key] = currentFormModel.value[key];
-    });
-    return model;
-}
 
 const hasTitle = computed(() => {
     return props.formData.hasOwnProperty('title');
@@ -67,48 +75,43 @@ const hasSections = computed(() => {
     return props.formData.hasOwnProperty('sections');
 });
 
+function formattedFormModel() {
+    // Could build this up from formData and then use options object to transform values to outputs
+    var sortedKeys = Object.keys(props.formModel).sort();
+    var model = {};
+    sortedKeys.forEach((key) => {
+        model[key] = props.formModel[key].value;
+    });
+    return model;
+}
+
 function hasQuestions(section){
     return section.hasOwnProperty('questions');
 }
 
-function createFormModel(){
-    if(Array.isArray(props.formData)){
-        return searchStack([...props.formData]);
-    }
-    else {
-        return searchStack([props.formData]);
-    }
+function resetValidation() {
+    enableErrors.value = 0;
 }
 
-function searchStack(stack) {
-    var model = {};
-    while (stack?.length > 0) {
-        var currentObj = stack.pop();
-        if(currentObj.hasOwnProperty('model-name')){
-            var defaultValue = getDefault(currentObj);
-            model[currentObj['model-name']] = defaultValue;
-        }
-        Object.keys(currentObj).forEach(key => {
-            if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
-                stack.push(currentObj[key]);
-            }
-        });
+function submitForm() {
+    var anyErrors = Object.keys(props.formModel)
+        .filter( key => props.formModel[key].validation != "" )
+        .length > 0;
+    if(anyErrors) {
+        enableErrors.value++;
+        return;
     }
-    model.valid = false;
-    return model;
+
+    submit.value = true;
 }
 
-function toggleValidate() {
-    validate.value = !validate.value;
+function returnToForm() {
+    submit.value = !submit.value;
 }
-
-onMounted(() => {
-    getFormModel();
-})
 </script>
 
 <style scoped>
-.build-view {
+.build-view, .model-view {
     background-color: var(--color-border);
     width: 100%;
     flex-grow: 1;
@@ -116,6 +119,27 @@ onMounted(() => {
     border-radius: 20px;
     display: flex;
     flex-direction: column;
+}
+
+.model-view {
+    justify-content: center;
+    gap: 1em;
+}
+
+.model-container {
+    display: flex;
+    flex-grow: 1;
+    gap: 1em;
+    justify-content: center;
+    align-items: center;
+}
+
+.model-name-container, .model-value-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap:1em
 }
 
 .form-title {
@@ -148,9 +172,11 @@ onMounted(() => {
 .submit-row {
     display: flex;
     justify-content: center;
+    gap: 0.5em;
 }
 
 .submit-btn {
+    width: 100px;
     background-color: var(--vt-c-mute);
     border: 1px solid var(--vt-c-soft);
     cursor: pointer;

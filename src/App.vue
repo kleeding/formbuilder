@@ -1,5 +1,6 @@
 <script setup>
-import { ref, provide } from 'vue'
+import { ref, provide, onMounted } from 'vue'
+import { createModel } from './components/javascript/model'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
 import Design from './components/sections/Design.vue'
@@ -20,8 +21,15 @@ provide('model', {
 });
 
 function updateFormModel(name, newValue) {
-  if(formModel.value.hasOwnProperty(name)) formModel.value[name] = newValue;
+  if(formModel.value.hasOwnProperty(name)) {
+      formModel.value[name].value = newValue;
+      formModel.value[name].validation = [];
+  }
 }
+
+onMounted(() => {
+  formModel.value = createModel(formData.value, formModel);
+})
 </script>
 
 <template>

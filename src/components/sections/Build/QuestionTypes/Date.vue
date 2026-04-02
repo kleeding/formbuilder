@@ -1,5 +1,11 @@
 <template>
-    <input type="date" v-model="formModel[details['model-name']]" :name="details['model-name']" />
+    <input 
+        type="date"
+        v-model="formModel[details['model-name']].value"
+        :name="details['model-name']"
+        :min="getMinDate"
+        :max="getMaxDate"
+    />
 </template>
 
 <script setup>
@@ -12,14 +18,39 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    validate: {
-        type: Boolean,
+    enableErrors: {
+        type: Number,
         default: false,
         required: false
     }
+})
+
+const getMinDate = computed(() => {
+    var daysAgo = 30;
+    var now = Date.now();
+    if(props.details.min){
+        var min = parseFloat(props.details.min);
+        if(!isNaN(min)) {
+            daysAgo = min;
+        }
+    }
+    return new Date(now - daysAgo * 86400000).toISOString().slice(0, 10);
+})
+
+const getMaxDate = computed(() => {
+    var daysAhead = 30;
+    var now = Date.now();
+    if(props.details.max){
+        var max = parseFloat(props.details.max);
+        if(!isNaN(max)) {
+            daysAhead = max;
+        }
+    }
+    return new Date(now + daysAhead * 86400000).toISOString().slice(0, 10);
 })
 </script>
 
 <style scoped>
 
 </style>
+

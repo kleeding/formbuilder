@@ -21,29 +21,40 @@ export const example = (`{
                     "default": "pre-filled text",
                     "placeholder": "placeholder text goes here",
                     "validation": [
-                        "nonempty", 
-                        "alphanumeric",
-                        "range-100-300"
+                        "range-100-300",
+                        "validsymbols"
                     ]
                 },
                 {
                     "id": "1.2",
                     "model-name": "q1.2",
-                    "label": "Choose a date?",
-                    "component": "date",
-                    "default": "2026-03-31"
+                    "label": "Is this a text input?",
+                    "component": "text",
+                    "default": "pre-filled text",
+                    "placeholder": "placeholder text goes here",
+                    "required": "true",
+                    "validation": [
+                        "alphanumeric",
+                        "range-100-300"
+                    ]
                 },
                 {
                     "id": "1.3",
                     "model-name": "q1.3",
+                    "label": "Choose a date?",
+                    "component": "date"
+                },
+                {
+                    "id": "1.4",
+                    "model-name": "q1.4",
                     "label": "This is a radio?",
                     "component": "radio",
                     "default": "0",
                     "options": "YesNo",
                     "questions": [
                         {
-                            "id": "1.3.1",
-                            "model-name": "q1.3.1",
+                            "id": "1.4.1",
+                            "model-name": "q1.4.1",
                             "label": "Further information",
                             "component": "textarea",
                             "placeholder": "placeholder text goes here",
@@ -53,11 +64,19 @@ export const example = (`{
                     ]
                 },
                 {
-                    "id": "1.4",
-                    "model-name": "q1.4",
+                    "id": "1.5",
+                    "model-name": "q1.5",
                     "label": "Pick some options?",
                     "component": "checkbox",
                     "options": "YesNo"
+                },
+                {
+                    "id": "1.6",
+                    "model-name": "q1.6",
+                    "label": "Pick some options?",
+                    "component": "checkbox",
+                    "options": "YesNo",
+                    "required": "true"
                 }
             ]
         },
@@ -82,7 +101,6 @@ export const example = (`{
                             "required": "true",
                             "dependency": "1",
                             "validation": [
-                                "nonempty",
                                 "alphanumeric"
                             ]
                         },
@@ -152,80 +170,3 @@ export const example = (`{
         ]
     }
 }`);
-
-
-/**
- * GOING TO TURN THIS INTO A SECOND FORM SCHEMA WHERE
- * - ALL QUESTIONS ARE LISTED IN A SINGLE ARRAY
- * - EACH QUESTION HAS A PARENT FIELD THAT LINKS IT WITH IT'S DEPENDENCY
- * 
- * GOING TO TRY AND DO THIS IN A WAY WHERE THE TWO SCHEMAS CAN BE USED INTERCHANGEABLY
- */
-export const example2 = (`[
-    {
-        "id": "1",
-        "model-name": "q1",
-        "required": "true",
-        "label": "This is a radio question?",
-        "component": "radio",
-        "default": "0",
-        "options": [
-            {
-                "label": "Yes",
-                "value": "1"
-            },
-            {
-                "label": "No",
-                "value": "0"
-            }
-        ],
-        "questions": [
-            {
-                "id": "1.1",
-                "model-name": "q1.1",
-                "label": "This is a textarea question?",
-                "component": "textarea",
-                "placeholder": "This is placeholder text",
-                "dependency": "1"
-            }
-        ]
-    },
-    {
-        "id": "2",
-        "model-name": "q2",
-        "label": "This is a text question?",
-        "component": "text",
-        "placeholder": "This is placeholder text"
-    },
-    {
-        "id": "3",
-        "model-name": "q3",
-        "label": "This is a textarea question?",
-        "component": "textarea",
-        "default": "This is a default value"
-    },
-    {
-        "id": "4",
-        "model-name": "q4",
-        "label": "This is a select question?",
-        "component": "select",
-        "options": [
-            {
-                "label": "Please Select",
-                "value": "0"
-            },
-            {
-                "label": "One",
-                "value": "1"
-            },
-            {
-                "label": "Two",
-                "value": "2"
-            },
-            {
-                "label": "Three",
-                "value": "3"
-            }
-        ]
-    }
-]`);
