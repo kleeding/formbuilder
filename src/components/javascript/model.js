@@ -11,7 +11,7 @@ function createFormModel(formData){
 }
 
 function replaceValues(newModel, oldModel){
-    Object.keys(oldModel.value).forEach(key => {
+    Object.keys(oldModel).forEach(key => {
         if(newModel.hasOwnProperty(key)) newModel[key] = oldModel.value[key];
     });
     return newModel;

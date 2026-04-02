@@ -28,7 +28,7 @@ function updateFormModel(name, newValue) {
 }
 
 onMounted(() => {
-  formModel.value = createModel(formData.value, formModel);
+  formModel.value = createModel(formData.value, formModel.value);
 })
 </script>
 

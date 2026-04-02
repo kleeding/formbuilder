@@ -60,7 +60,7 @@ const formDataRef = toRefs(props).formData;
 const emits = defineEmits(['update:formModel'])
 
 watch(formDataRef, () => {
-    createModel(props.formData, currentFormModel);
+    currentFormModel.value = createModel(props.formData, currentFormModel.value);
 })
 
 watch(currentFormModel, (newFormModel) => {
