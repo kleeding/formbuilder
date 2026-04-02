@@ -2,7 +2,7 @@
     <div v-for="question in questions" :key="question.id" class="form-question">
         <div v-if="isEnabled(question)"> 
             <div class="question-label">
-                {{ question.id + " " + question.label }}
+                {{ question.label }}
                 <div v-if="question.required === 'true'" class="required">*</div>
             </div>
             <component :is="getComponent(question)" :details="question" :options="getOptions(question)" :enableErrors="enableErrors"></component>
