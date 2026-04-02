@@ -1,5 +1,5 @@
 <template>
-    <div v-for="question in questions" :key="question.id" class="form-question">
+    <div v-for="question in questions" :key="question.id" :class="{ 'form-question': isEnabled(question) }">
         <div v-if="isEnabled(question)"> 
             <div class="question-label">
                 {{ question.label }}
