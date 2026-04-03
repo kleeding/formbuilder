@@ -62,9 +62,16 @@
                 </div>
             </div>
         </div>
+        
         <div class="toolbox-side-controls">
-            <button @click="toggleEdit">edit</button>
-            <button v-if="currentQuestion.questions && currentQuestion.questions.length > 0" @click="toggleExpand()">exp.</button>
+            <div style="width: 36px; height: 36px;">
+                <div v-if="editEnabled" @click="toggleEdit"><img src="@/components/icons/save.svg"></div>
+                <div v-else @click="toggleEdit"><img src="@/components/icons/edit.svg"></div>
+            </div>
+            <div v-if="currentQuestion.questions && currentQuestion.questions.length > 0">
+                <div v-if="expand" @click="toggleExpand()"><img src="@/components/icons/collapse.svg"></div>
+                <div v-else @click="toggleExpand()"><img src="@/components/icons/expand.svg"></div>
+            </div>
         </div>
     </div>
 
