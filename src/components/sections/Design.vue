@@ -1,38 +1,44 @@
 <template>
-    <!-- 
-    IDEA: 
-    - Add a tools section here for easy enter json elements
-        - Add text/textarea/select/checkbox/radio
-        - Add fields (string/array/object)
-    - Just adds empty versions of these
-    - Probably makes sense to be its own component
-    -->
     <section class="design-view">
-        <div id="design-title">
-            <h3>Input your Form JSON</h3>
-            <div class="json-buttons">
-                <button @click="clean">Clean</button>
-                <button @click="beautify">Beautify</button>
+        <div v-if="isToolboxEnabled" class="toolbox-view">
+            <Toolbox v-model:formJson="formJson" :formData="currentFormData"/>
+        </div>
+        <div v-else class="json-view">        
+            <div id="design-title">
+                <h3>Input your Form JSON</h3>
+                <div class="json-buttons">
+                    <button @click="clean">Clean</button>
+                    <button @click="beautify">Beautify</button>
+                </div>
+            </div>
+            <textarea
+                id="json-input"
+                class="json-input"
+                v-model="formJson"
+                placeholder='{ "id": 1, "question": "...", "component": "text" }'>
+            </textarea>
+            <p v-if="!isJsonValid" class="error">Invalid JSON syntax detected.</p>
+        </div>
+        <div class="toolbox-enabler">
+            <label class="checkbox-label" for="toolbox-enabler">Enable Toolbox</label>
+            <div class="checkbox-input-container">
+                <input type="checkbox" class="checkbox-box" id="toolbox-enabler" value="1" v-model="isToolboxEnabled" />
             </div>
         </div>
-        <textarea
-            id="json-input"
-            class="json-input"
-            v-model="formJson"
-            placeholder='{ "id": 1, "question": "...", "component": "text" }'
-        ></textarea>
-        <p v-if="!isJsonValid" class="error">Invalid JSON syntax detected.</p>
     </section>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { example } from '../javascript/jsonInputs';
+import { example2 } from '../javascript/dontcommit/dontcommitthis';
+import Toolbox from './Toolbox.vue';
 
 const formJson = ref(example);
 // Memory of the form data so if there is an error last non-error form builds
 const currentFormData = ref({});
 const isJsonValid = ref();
+const isToolboxEnabled = ref(false);
 
 const props = defineProps({
     formData: {
@@ -73,21 +79,11 @@ function clean() {
     formJson.value = JSON.stringify(JSON.parse(formJson.value), null, 4);
 }
 
-// const allowedKeys = new Set([
-//     "id", "title", "sections", "questions", "model-name", "label", "component", "default", "placeholder", "options", "value", "required", "dependency"
-// ]);
-
-// function theReplacer(key, value) {
-//     if (key === "") return value;
-//     if (!isNaN(key)) return value;
-//     if(allowedKeys.has(key)) return value;
-//     if(typeof key !== 'undefined' && (key.startsWith("sections") || key.startsWith("questions"))) {
-//         return value;
-//     }
-//     return undefined;
-// }
-
 getFormData();
+
+onMounted(() => {
+    isToolboxEnabled.value = true;
+})
 </script>
 
 <style scoped>
@@ -97,6 +93,26 @@ getFormData();
     flex-grow: 1;
     padding: 1em;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbox-enabler {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.checkbox-input-container {
+    width: 2em;
+}
+
+.checkbox-label {
+  font-size: 0.75rem;
+}
+
+.json-view, .toolbox-view {
+    width: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
 }

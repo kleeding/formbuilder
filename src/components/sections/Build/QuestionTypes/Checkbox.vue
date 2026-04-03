@@ -6,7 +6,7 @@
             </div>
             <label class="checkbox-label" :for="details['model-name'] + '-' + option.value">{{ option.label }}</label>
         </div>
-    </div>    
+    </div>
     <div v-if="showErrors" v-for="error in formModel[modelName].validation" class="validation-errors">
         <span>{{ error }}</span>
     </div>
@@ -60,48 +60,3 @@ onMounted(() => {
     formModel.value[modelName].validation = validate(formModel.value[modelName].value, props.details);
 })
 </script>
-
-<style scoped>
-.checkbox-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.checkbox-option-container {
-    width: 100%;
-    display: flex;
-}
-
-.checkbox-input-container {
-    width: 50%;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.checkbox-box {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    border: 2px solid var(--color-background-chill);
-    margin: auto 5px;
-    vertical-align: middle;
-}
-
-.checkbox-box:where(:active, :hover) {
-    border-color: var(--color-button-border);
-    outline: none;
-}
-
-.checkbox-box:checked {
-    background-color: var(--color-button-border);
-}
-
-.checkbox-label {
-    cursor: default;
-    margin: auto 0;
-}
-</style>

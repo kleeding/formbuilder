@@ -15,6 +15,7 @@
     </section>
 
     <section v-if="submit" class="model-view">
+        <!-- CHANGE THIS SO THAT IT USES A TABLE  -->
         <div class="model-container">
             <div class="model-name-container">
                 <span>Field Name</span>

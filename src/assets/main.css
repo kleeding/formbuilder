@@ -84,3 +84,175 @@ textarea::-webkit-resizer {
   align-items: end;
   color: var(--color-button-border);
 }
+
+.radio-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5em;
+}
+
+.radio-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin: calc(0.75em - 11px) 0.25rem 0 0;
+  border: 2px solid var(--color-background-chill);
+  border-radius: 50%;
+  background: var(--color-background-chill) no-repeat center center;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.radio-button:where(:active, :hover) {
+  border-color: var(--color-button-border);
+  outline: none;
+}
+
+.radio-button:checked {
+  background-color: var(--color-button-border);
+}
+
+.radio-label {
+  cursor: default;
+  vertical-align: middle;
+}
+
+.checkbox-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.checkbox-option-container {
+  width: 100%;
+  display: flex;
+}
+
+.checkbox-input-container {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.checkbox-box {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-background-chill);
+  margin: auto 5px;
+  vertical-align: middle;
+}
+
+.checkbox-box:where(:active, :hover) {
+  border-color: var(--color-button-border);
+  outline: none;
+}
+
+.checkbox-box:checked {
+  background-color: var(--color-button-border);
+}
+
+.checkbox-label {
+  cursor: default;
+  margin: auto 0;
+}
+
+.toolbox-view {
+  flex-grow: 1;
+  /* gap: 0.8em; */
+}
+
+.toolbox-element {
+  background-color: var(--vt-c-mute);
+  width: 100%;
+  display: flex;
+}
+
+.toolbox-element-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.4em;
+  padding: 18px;
+}
+
+.toolbox-side-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 12px;
+}
+
+.toolbox-input {
+  width: 100%;
+  /* margin: 0 1em; */
+}
+
+.toolbox-element-title {
+  font-weight: 200;
+}
+
+.toolbox-label {
+  font-weight: 500;
+}
+
+.toolbox-sections {
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.6em; */
+}
+
+.toolbox-questions {
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.3em; */
+}
+
+.collapsed {
+  display: none;
+}
+
+.new-element {
+  background-color: var(--vt-c-chill);
+  height: 8px;
+  margin: 0.4em 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.2s;
+}
+
+.new-element-text {
+  display: none;
+}
+
+.new-element:hover {
+  cursor: pointer;
+  height: 16px;
+  overflow: hidden;
+  transition: height 0.2s;
+}
+
+.new-element:hover .new-element-text {
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+}
+
+.question-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.question-setting {
+  display: flex;
+  gap: 1em;
+}
