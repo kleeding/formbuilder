@@ -29,9 +29,8 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { example } from '../javascript/jsonInputs';
-import { example2 } from '../javascript/dontcommit/dontcommitthis';
 import Toolbox from './Toolbox.vue';
 
 const formJson = ref(example);
@@ -80,10 +79,6 @@ function clean() {
 }
 
 getFormData();
-
-onMounted(() => {
-    isToolboxEnabled.value = true;
-})
 </script>
 
 <style scoped>
