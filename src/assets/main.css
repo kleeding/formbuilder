@@ -218,7 +218,8 @@ textarea::-webkit-resizer {
   display: none;
 }
 
-.new-element {
+.new-section,
+.new-question {
   background-color: var(--vt-c-chill);
   height: 8px;
   margin: 0.4em 0;
@@ -229,18 +230,24 @@ textarea::-webkit-resizer {
   transition: height 0.2s;
 }
 
+.new-question {
+  background-color: var(--color-border);
+}
+
 .new-element-text {
   display: none;
 }
 
-.new-element:hover {
+.new-section:hover,
+.new-question:hover {
   cursor: pointer;
   height: 16px;
   overflow: hidden;
   transition: height 0.2s;
 }
 
-.new-element:hover .new-element-text {
+.new-section:hover .new-element-text,
+.new-question:hover .new-element-text {
   cursor: pointer;
   display: block;
   font-size: 12px;

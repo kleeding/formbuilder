@@ -16,11 +16,11 @@
     </div>
 
     <div :class="['toolbox-questions', { ['collapsed']: !expand }]"> <!-- MAKE THIS COLLAPSIBLE -->
-        <NewQuestion />
-        <Question v-for="(question, index) in currentSection.questions" :position="[...position, index]"/>
+        <NewQuestion :position="[...position, 0]"/>
+        <Question v-for="(question, index) in currentSection.questions" :key="question.id" :position="[...position, index]"/>
     </div>
 
-    <NewSection />
+    <NewSection :position="position[0] + 1"/>
 </template>
 
 <script setup>
@@ -30,7 +30,7 @@ import NewSection from './NewSection.vue';
 import Question from './Question.vue';
 
 const editEnabled = ref(false);
-const expand = ref(true); // default should be false
+const expand = ref(false);
 
 const { toolboxForm, updateForm } = inject('data');
 
@@ -46,6 +46,7 @@ const currentSection = ref(setupSection());
 function setupSection() {
     var baseSection = JSON.parse(JSON.stringify(toolboxForm.value.sections[props.position[0]]));
 
+    if(!baseSection.id) baseSection.id = crypto.randomUUID();
     if(!baseSection.title) baseSection.title = "";
     if(!baseSection.questions) baseSection.questions = "";
 
@@ -57,6 +58,10 @@ watch(editEnabled, (enabled) => {
     var baseForm =  JSON.parse(JSON.stringify(toolboxForm.value));
     baseForm.sections[props.position[0]].title = currentSection.value.title;
     updateForm(baseForm);
+})
+
+watch(toolboxForm, () => {
+    currentSection.value = setupSection();
 })
 
 function toggleEdit() {

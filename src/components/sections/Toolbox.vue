@@ -42,6 +42,3 @@ function updateForm(newForm) {
 
 provide('data', {toolboxForm, updateForm});
 </script>
-
-<style scoped>
-</style>

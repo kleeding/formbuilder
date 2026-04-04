@@ -13,12 +13,6 @@
       >
         Build
       </button>
-      <!-- <button 
-        :class="{ active: isOutput }" 
-        @click="changeView('output')"
-      >
-        Output
-      </button> -->
     </nav>    
 </template>
 
@@ -103,10 +97,6 @@ const isDesign = computed(() => {
 
 const isBuild = computed(() => {
   return currentActiveViews.value.build;
-})
-
-const isOutput = computed(() => {
-  return currentActiveViews.value.output;
 })
 
 // Probs good to add debounce here

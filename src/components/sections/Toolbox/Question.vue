@@ -68,7 +68,7 @@
                 <div v-if="editEnabled" @click="toggleEdit"><img src="@/components/icons/save.svg"></div>
                 <div v-else @click="toggleEdit"><img src="@/components/icons/edit.svg"></div>
             </div>
-            <div v-if="currentQuestion.questions && currentQuestion.questions.length > 0">
+            <div>
                 <div v-if="expand" @click="toggleExpand()"><img src="@/components/icons/collapse.svg"></div>
                 <div v-else @click="toggleExpand()"><img src="@/components/icons/expand.svg"></div>
             </div>
@@ -76,10 +76,11 @@
     </div>
 
     
-    <div v-if="currentQuestion.questions && currentQuestion.questions.length > 0" :class="['toolbox-sections', { ['collapsed']: !expand }]">
-        <Question v-for="(question, index) in currentQuestion.questions" :position="[...position, index]"/>
+    <div :class="['toolbox-sections', { ['collapsed']: !expand }]">
+        <NewQuestion :position="[...position, 0]"/>
+        <Question v-for="(question, index) in currentQuestion.questions" :key="question.id" :position="[...position, index]"/>
     </div>
-    <NewQuestion />
+    <NewQuestion :position="getEndPosition()"/>
 </template>
 
 <script setup>
@@ -108,6 +109,7 @@ function setupQuestion() {
         question = question.questions[positions.shift()];
     }
 
+    if(!question.id) question.id = crypto.randomUUID();
     if(!question['model-name']) question['model-name'] = "";
     if(!question.label) question.label = "";
     if(!question.component) question.component = "";
@@ -154,13 +156,21 @@ function toggleExpand() {
     expand.value = !expand.value;
 }
 
+function getEndPosition(){
+    var positions = [...props.position];
+    positions[positions.length - 1]++;
+    return positions;
+}
+
+watch(toolboxForm, () => {
+    currentQuestion.value = setupQuestion();
+})
+
 const componentTypes = [ "text", "textarea", "select", "radio", "checkbox", "date" ];
 
 const optionsList = computed(() => {
     return Object.keys(toolboxForm.value.options);
 })
-
-const validationList = [ 'nonempty','alpha','numeric','alphanumeric','validsymbols','range','greater','less' ]
 </script>
 
 <style scoped>

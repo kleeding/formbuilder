@@ -16,9 +16,9 @@
     </div>
 
     <div :class="['toolbox-sections', { ['collapsed']: !expand }]">
-        <NewSection />
+        <NewSection :position="0"/>
 
-        <Section v-for="(section, index) in currentForm.sections" :position="[index]"/>
+        <Section v-for="(section, index) in currentForm.sections" :key="section.id" :position="[index]"/>
     </div>
 </template>
 
@@ -37,6 +37,7 @@ const currentForm = ref(setupForm());
 function setupForm() {
     var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
 
+    if(!baseForm.id) baseForm.id = crypto.randomUUID();
     if(!baseForm.title) baseForm.title = "";
     if(!baseForm.sections) baseForm.sections = [];
 
@@ -48,6 +49,10 @@ watch(editEnabled, (enabled) => {
     var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
     baseForm.title = currentForm.value.title;
     updateForm(baseForm);
+})
+
+watch(toolboxForm, () => {
+    currentForm.value = setupForm();
 })
 
 function toggleEdit() {

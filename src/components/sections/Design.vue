@@ -29,15 +29,16 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import { example } from '../javascript/jsonInputs';
 import Toolbox from './Toolbox.vue';
 
-const formJson = ref(example);
+const formJson = ref(loadJson());
+
 // Memory of the form data so if there is an error last non-error form builds
 const currentFormData = ref({});
 const isJsonValid = ref();
-const isToolboxEnabled = ref(false);
+const isToolboxEnabled = ref(true);
 
 const props = defineProps({
     formData: {
@@ -54,7 +55,15 @@ watch(formJson, () => {
 
 watch(currentFormData, (newFormData) => {
     emits('update:formData', newFormData);
+    localStorage.setItem('formJsonSave', formJson.value);
 })
+
+function loadJson() {
+    var loadedJson = localStorage.getItem("formJsonSave");
+    if(loadJson !== null && loadedJson !== "") return loadedJson;
+    localStorage.setItem("formJsonSave", example);
+    return example;
+}
 
 function getFormData() {
     try {
@@ -79,6 +88,10 @@ function clean() {
 }
 
 getFormData();
+
+onUnmounted(() => {
+    localStorage.setItem("formJsonSave", formJson.value);
+})
 </script>
 
 <style scoped>
