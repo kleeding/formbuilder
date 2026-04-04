@@ -130,6 +130,12 @@ function setupQuestion() {
         question = question.questions[positions.shift()];
     }
 
+    /**
+     * Here I initialise all the possible fields, some of these are redundant for different components
+     * - also missing min/max for date component
+     * On save I need to delete the unused/unneeded fields 
+     * - Make a function called format question, can sort the dependencies out in there too
+     */
     if(!question.id) question.id = crypto.randomUUID();
     if(!question['model-name']) question['model-name'] = crypto.randomUUID();
     if(!question.label) question.label = crypto.randomUUID();
@@ -148,6 +154,7 @@ function toggleEdit() {
     editEnabled.value = !editEnabled.value;
     if(editEnabled.value) return;
     
+    // Need to move this into a format currentQuestion function
     var dependencies = "";
     if(currentQuestion.value.dependency !== "") {
         if(!Array.isArray(currentQuestion.value.dependency)) {
@@ -156,6 +163,7 @@ function toggleEdit() {
         }
     }
 
+    // Need to move the following into a save currentQuestion function
     var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
 
     var positions = [...props.position];
