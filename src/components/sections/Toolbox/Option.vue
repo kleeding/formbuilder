@@ -27,7 +27,7 @@
                         <td v-if="editEnabled">
                             <input v-if="editEnabled" type="text" class="toolbox-input" v-model="option.value" name="title" placeholder="Enter a value" />
                             <div style="position: relative;">
-                                <div style="position: absolute; bottom:0px; right: 0px; scale: 1;" @click="deleteOption(index)">
+                                <div style="height: 24px; position: absolute; bottom: 0px; right: -22px; scale: 0.8;" @click="deleteOption(index)">
                                     <img src="@/components/icons/delete.svg">
                                 </div>
                             </div>

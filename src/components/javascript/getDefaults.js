@@ -1,5 +1,5 @@
 export function getDefault(question) {
-    if(question.hasOwnProperty('default')) {
+    if(question.hasOwnProperty('default') && question.default !== "") {
         return question.default;
     }
     if(question.hasOwnProperty('component') && typeDefaults.hasOwnProperty(question.component)) {

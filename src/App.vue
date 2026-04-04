@@ -29,8 +29,6 @@ function updateFormModel(name, newValue) {
 
 watch(formData, () => {
   formModel.value = createModel(formData.value, formModel.value);
-  console.log("formData changed");
-  console.log(formModel);
 })
 
 onMounted(() => {
@@ -57,11 +55,6 @@ onMounted(() => {
       v-model:formModel="formModel"
       :formData="formData"
     />
-
-    <!-- <section v-if="activeViews.output === true" class="build-view"> -->
-      <!-- This will be made into a component -->
-      <!-- <h3>Form Output</h3>
-    </section> -->
   </main>
 </template>
 

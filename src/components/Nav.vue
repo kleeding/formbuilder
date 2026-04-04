@@ -37,11 +37,47 @@ function initViewHistory() {
   var viewHistory = [];
   if(currentActiveViews.value.design) viewHistory.push('design');
   if(currentActiveViews.value.build) viewHistory.push('build');
-  if(currentActiveViews.value.output) viewHistory.push('output');
   return viewHistory;
 }
 
 const emits = defineEmits(['update:activeViews'])
+
+function changeView(view) {
+  var reloadBuild = false;
+  if(maxViews.value === 1) {
+    if(currentActiveViews.value[view]) return;
+    if(view === 'design') {
+      currentActiveViews.value['design'] = true;
+      currentActiveViews.value['build'] = false;
+      viewHistory.value = ['design'];
+    }
+    if(view === 'build') {
+      currentActiveViews.value['design'] = false;
+      currentActiveViews.value['build'] = true;
+      viewHistory.value = ['build'];
+    }
+  }
+  else {
+    if(!currentActiveViews.value[view]) {
+      currentActiveViews.value[view] = true;
+      viewHistory.value.push(view);
+      if(view === 'design') reloadBuild = true;
+    }
+    else {
+      if(viewHistory.value.length === 2){
+        currentActiveViews.value[view] = false;
+        viewHistory.value = viewHistory.value.filter(element => element !== view);
+      }
+    }
+  }
+
+  emits('update:activeViews', currentActiveViews.value);
+}
+
+/**
+ *  OLD NAV METHOD - BUILD TO ALLOW FOR ANY NUMBER OF VIEWS
+ *  ONLY USING TWO VIEWS NOW SO GOING TO SIMPLIFY
+
 
 function changeView(view){
   if(currentActiveViews.value[view]) {
@@ -81,7 +117,8 @@ function changeView(view){
     var viewToDisable = viewHistory.value.shift();
     disableView(viewToDisable);
   }
-}
+} 
+*/
 
 const width = ref(window.innerWidth)
 
@@ -99,11 +136,15 @@ const isBuild = computed(() => {
   return currentActiveViews.value.build;
 })
 
+const numberActive = computed(() => {
+  return isDesign.value + isBuild.value;
+})
+
 // Probs good to add debounce here
 function updateWidth() {
   width.value = window.innerWidth;
 
-  while(viewHistory.value.length > maxViews.value && viewHistory.value.length != 1){
+  if(numberActive.value > maxViews.value){
     var removedView = viewHistory.value.shift();
     currentActiveViews.value[removedView] = false;
     emits('update:activeViews', currentActiveViews.value);

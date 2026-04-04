@@ -5,7 +5,7 @@
             <span class="radio-label" @click="clickRadio(option.value)">{{ option.label }}</span>
         </div>
     </div>
-    <div v-if="showErrors" v-for="error in formModel[modelName].validation" class="validation-errors">
+    <div v-if="showErrors" v-for="error in formModel[props.details['model-name']].validation" class="validation-errors">
         <span>{{ error }}</span>
     </div>
 </template>
@@ -41,7 +41,6 @@ function clickRadio(value) {
 }
 
 const enableErrorsRef = toRefs(props).enableErrors;
-
 watch(enableErrorsRef, (newValue) => {
     if(newValue > 0 && formModel.value[props.details['model-name']].validation != "") {
         showErrors.value = true
@@ -51,15 +50,25 @@ watch(enableErrorsRef, (newValue) => {
     }
 })
 
-var modelName = props.details['model-name'];
-watch(formModel.value[modelName], (newValue) => {
+const detailsRef = toRefs(props).details;
+watch(detailsRef, () => {
+    try {
+        showErrors.value = false;
+        formModel.value[props.details['model-name']].validation = validate(formModel.value[props.details['model-name']].value, props.details);
+    }
+    catch{
+        console.log("issue revalidating when updating question");
+    }
+});
+
+watch(formModel.value[props.details['model-name']], (newValue) => {
     if(newValue.value == valueHistory.value) return;
     valueHistory.value = newValue.value;
     showErrors.value = false;
-    formModel.value[modelName].validation = validate(formModel.value[modelName].value, props.details);
+    formModel.value[props.details['model-name']].validation = validate(formModel.value[props.details['model-name']].value, props.details);
 });
 
 onMounted(() => {
-    formModel.value[modelName].validation = validate(formModel.value[modelName].value, props.details);
+    formModel.value[props.details['model-name']].validation = validate(formModel.value[props.details['model-name']].value, props.details);
 })
 </script>

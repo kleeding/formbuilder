@@ -1,21 +1,20 @@
 export function validate(input, details) {
     var validationErrors = [];
+    var validators = [];
 
-    if(details.required) {
-        var error = isNonEmpty(input, details.component);
-        if(error != "") validationErrors.push(error);
+    if(details.hasOwnProperty("required")) {
+        if(details.required === "true") validationErrors.push(isNonEmpty(input));
     }
 
-    var validators = details.validation;
+    if(details.hasOwnProperty("validation")) validators = [...details.validation];
 
-    if(validators === undefined 
-        || validators.length === 0 
-        || ["select","radio","checkbox"].includes(details.component)) 
-        return validationErrors ?? [];
+    if(validators.length === 0  || ["select","radio","checkbox","date"].includes(details.component)) {
+        return validationErrors;
+    }
 
     validators.forEach(validator => {
         var { validatorName, params } = getValidatorSettings(validator);
-        if(validatorName.toLowerCase() == 'nonempty' && required) return;
+        if(validatorName.toLowerCase() == 'nonempty' && details.required) return;
         var error = runValidator(input, validatorName, params);
         if(error != "") validationErrors.push(error);
     });
@@ -107,13 +106,3 @@ function isLess(input) {
     if(num <= params[0]) return "";
     return `Must be less than or equal to ${params[0]}.`
 }
-
-/**
- * VALIDATION FOR:
- * [ ] TEXT: nonempty/validsymbols/alpha/numeric/alphanumeric/range/greater/less
- * [ ] TEXTAREA: same as above
- * [X] SELECT: nonempty/(single option default valdiaiton)
- * [X] RADIO: nonempty/(single option default validation)
- * [X] CHECKBOX: nonempty/
- * [X] DATE: nonempty/valid/range/greater/less
- */

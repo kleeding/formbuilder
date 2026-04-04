@@ -23,7 +23,7 @@ function searchStack(stack) {
         var currentObj = stack.pop();
         if(currentObj.hasOwnProperty('model-name')){
             var defaultValue = getDefault(currentObj);
-            model[currentObj['model-name']] = {'value': defaultValue, 'validation': '' };
+            model[currentObj['model-name']] = {'value': defaultValue, 'validation': [] };
         }
         Object.keys(currentObj).forEach(key => {
             if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {

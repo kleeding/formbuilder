@@ -40,9 +40,11 @@
 </template>
 
 <script setup>
-import { ref, toRefs, computed, watch } from 'vue'
+import { ref, toRefs, computed, watch, inject } from 'vue'
 import { createModel } from '../javascript/model';
 import QuestionSet from './Build/QuestionSet.vue'
+
+const { formModel, updateFormModel } = inject('model');
 
 const currentFormModel = ref({});
 const enableErrors = ref(0);
@@ -64,11 +66,8 @@ const formDataRef = toRefs(props).formData;
 const emits = defineEmits(['update:formModel'])
 
 watch(formDataRef, () => {
-    currentFormModel.value = createModel(props.formData, currentFormModel.value);
-})
-
-watch(currentFormModel, (newFormModel) => {
-    emits('update:formModel', newFormModel);
+    currentFormModel.value = createModel(props.formData, formModel.value);
+    updateFormModel(createModel(props.formData, formModel.value));
 })
 
 const hasTitle = computed(() => {
