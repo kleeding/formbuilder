@@ -1,4 +1,5 @@
 <template>
+  <div>
     <nav class="controls">
       <button 
         :class="{ active: isDesign }" 
@@ -13,11 +14,22 @@
       >
         Build
       </button>
-    </nav>    
+    </nav>
+    <div style="position: relative;">
+      <div style="position: absolute; bottom: 0px; right: -40px;">
+        <img src="@/components/icons/info.svg" @click="toggleInfo()">
+      </div>
+    </div>
+  </div>
+
+  <InfoModal :show-info-modal="showInfoModal"/>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import InfoModal from './sections/Design/InfoModal.vue';
+
+const showInfoModal = ref(false);
 
 const props = defineProps({
     activeViews: {
@@ -72,6 +84,10 @@ function changeView(view) {
   }
 
   emits('update:activeViews', currentActiveViews.value);
+}
+
+function toggleInfo() {
+  showInfoModal.value = !showInfoModal.value;
 }
 
 /**
