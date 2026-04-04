@@ -1,6 +1,14 @@
 <template>
     <div class="toolbox-element">
-        <div class="toolbox-element-info toolbox-element-question">
+        <div v-if="setDelete" class="toolbox-element-info toolbox-element-question">
+            <div class="deletion-message">
+                <div @click="deleteSection()"><img src="@/components/icons/check.svg"></div>
+                CONFIRM DELETION
+                <div @click="toggleDelete()"><img src="@/components/icons/cross.svg"></div>
+            </div>
+        </div>
+
+        <div v-else class="toolbox-element-info toolbox-element-question">
             <span class="toolbox-element-title">{{'↳'.repeat(position.length - 1)}} Question</span>
             <div class="question-settings">
                 <div class="question-setting">
@@ -63,7 +71,7 @@
             </div>
         </div>
         
-        <div class="toolbox-side-controls">
+        <div v-if="!setDelete" class="toolbox-side-controls">
             <div style="width: 36px; height: 36px;">
                 <div v-if="editEnabled" @click="toggleEdit"><img src="@/components/icons/save.svg"></div>
                 <div v-else @click="toggleEdit"><img src="@/components/icons/edit.svg"></div>
@@ -73,8 +81,11 @@
                 <div v-else @click="toggleExpand()"><img src="@/components/icons/expand.svg"></div>
             </div>
         </div>
-    </div>
 
+        <div v-if="editEnabled && !setDelete" class="delete-button-container">
+            <div class="delete-element-button" @click="toggleDelete()"><img src="@/components/icons/delete.svg"></div>
+        </div>
+    </div>
     
     <div :class="['toolbox-sections', { ['collapsed']: !expand }]">
         <NewQuestion :position="[...position, 0]"/>
@@ -89,6 +100,7 @@ import NewQuestion from './NewQuestion.vue';
 
 const editEnabled = ref(false);
 const expand = ref(false);
+const setDelete = ref(false);
 
 const { toolboxForm, updateForm } = inject('data');
 
@@ -156,6 +168,36 @@ function toggleExpand() {
     expand.value = !expand.value;
 }
 
+function toggleDelete() {
+    setDelete.value = !setDelete.value;
+}
+
+function deleteSection() {
+    var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
+
+    var positions = [...props.position];
+    var parts = [baseForm.sections[positions.shift()]];
+
+    while (positions.length > 1){
+        parts.push(parts[parts.length - 1].questions[positions.shift()])
+    }
+
+    positions = [...props.position];
+    var curPart = parts.pop();
+    curPart.questions.splice([positions.pop()],1)
+
+    var newPart;
+    while (positions.length > 1) {
+        newPart = parts.pop()
+        newPart.questions[positions.pop()] = curPart
+        curPart = newPart
+    }
+
+    baseForm.sections[positions[0]] = curPart;
+
+    updateForm(baseForm);
+}
+
 function getEndPosition(){
     var positions = [...props.position];
     positions[positions.length - 1]++;
@@ -179,6 +221,7 @@ const optionsList = computed(() => {
 }
 
 .toolbox-element-question {
+  min-height: 257px;
   gap: 1em;
 }
 </style>

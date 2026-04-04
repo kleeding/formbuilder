@@ -1,17 +1,30 @@
 <template>
     <div class="toolbox-element toolbox-element-section">
-        <div class="toolbox-element-info">
+        <div v-if="setDelete" class="toolbox-element-info">
+            <div class="deletion-message">
+                <div @click="deleteSection()"><img src="@/components/icons/check.svg"></div>
+                CONFIRM DELETION
+                <div @click="toggleDelete()"><img src="@/components/icons/cross.svg"></div>
+            </div>
+        </div>
+        
+        <div v-else class="toolbox-element-info">
             <span class="toolbox-element-title">Section Title</span>
             <input v-if="editEnabled" type="text" class="toolbox-input" v-model="currentSection.title" name="title" placeholder="Enter a section title" />
             <span v-else class="toolbox-label">{{ currentSection.title }}</span>
         </div>
-        <div class="toolbox-side-controls">
+
+        <div v-if="!setDelete" class="toolbox-side-controls">
             <div style="width: 36px; height: 36px;">
                 <div v-if="editEnabled" @click="toggleEdit"><img src="@/components/icons/save.svg"></div>
                 <div v-else @click="toggleEdit"><img src="@/components/icons/edit.svg"></div>
             </div>
             <div v-if="expand" @click="toggleExpand()"><img src="@/components/icons/collapse.svg"></div>
             <div v-else @click="toggleExpand()"><img src="@/components/icons/expand.svg"></div>
+        </div>
+
+        <div v-if="editEnabled && !setDelete" class="delete-button-container">
+            <div class="delete-element-button" @click="toggleDelete()"><img src="@/components/icons/delete.svg"></div>
         </div>
     </div>
 
@@ -31,6 +44,7 @@ import Question from './Question.vue';
 
 const editEnabled = ref(false);
 const expand = ref(false);
+const setDelete = ref(false);
 
 const { toolboxForm, updateForm } = inject('data');
 
@@ -53,28 +67,29 @@ function setupSection() {
     return baseSection;
 }
 
-watch(editEnabled, (enabled) => {
-    if(enabled) return;
-    var baseForm =  JSON.parse(JSON.stringify(toolboxForm.value));
-    baseForm.sections[props.position[0]].title = currentSection.value.title;
-    updateForm(baseForm);
-})
-
 watch(toolboxForm, () => {
     currentSection.value = setupSection();
 })
 
 function toggleEdit() {
     editEnabled.value = !editEnabled.value;
+    if(editEnabled.value) return;
+    var baseForm =  JSON.parse(JSON.stringify(toolboxForm.value));
+    baseForm.sections[props.position[0]].title = currentSection.value.title;
+    updateForm(baseForm);
 }
 
 function toggleExpand() {
     expand.value = !expand.value;
 }
-</script>
 
-<style scoped>
-.toolbox-element-section {
-  background-color: rgba(0, 255, 42, 0.096);
+function toggleDelete() {
+    setDelete.value = !setDelete.value;
 }
-</style>
+
+function deleteSection() {
+    var baseForm =  JSON.parse(JSON.stringify(toolboxForm.value));
+    baseForm.sections.splice([props.position[0]], 1)
+    updateForm(baseForm);
+}
+</script>
