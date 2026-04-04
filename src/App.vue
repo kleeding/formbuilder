@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide, onMounted } from 'vue'
+import { ref, provide, onMounted, watch } from 'vue'
 import { createModel } from './components/javascript/model'
 import Header from './components/Header.vue'
 import Nav from './components/Nav.vue'
@@ -26,6 +26,12 @@ function updateFormModel(name, newValue) {
       formModel.value[name].validation = [];
   }
 }
+
+watch(formData, () => {
+  formModel.value = createModel(formData.value, formModel.value);
+  console.log("formData changed");
+  console.log(formModel);
+})
 
 onMounted(() => {
   formModel.value = createModel(formData.value, formModel.value);

@@ -122,13 +122,14 @@ function setupQuestion() {
     }
 
     if(!question.id) question.id = crypto.randomUUID();
-    if(!question['model-name']) question['model-name'] = "";
-    if(!question.label) question.label = "";
+    if(!question['model-name']) question['model-name'] = crypto.randomUUID();
+    if(!question.label) question.label = crypto.randomUUID();
     if(!question.component) question.component = "";
     if(!question.required) question.required = "false";
     if(!question.placeholder) question.placeholder = "";
     if(!question.default) question.default = "";
     if(!question.options) question.options = "";
+    if(!question.validation) question.validation = [];
 
     return question;
 }

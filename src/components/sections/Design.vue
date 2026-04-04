@@ -38,7 +38,7 @@ const formJson = ref(loadJson());
 // Memory of the form data so if there is an error last non-error form builds
 const currentFormData = ref({});
 const isJsonValid = ref();
-const isToolboxEnabled = ref(true);
+const isToolboxEnabled = ref(false);
 
 const props = defineProps({
     formData: {

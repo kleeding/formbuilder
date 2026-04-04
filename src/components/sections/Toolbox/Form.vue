@@ -20,12 +20,15 @@
 
         <Section v-for="(section, index) in currentForm.sections" :key="section.id" :position="[index]"/>
     </div>
+
+    <Options :options="currentForm.options"/>
 </template>
 
 <script setup>
 import { ref, watch, inject } from 'vue';
 import NewSection from '../Toolbox/NewSection.vue';
 import Section from '../Toolbox/Section.vue';
+import Options from './Options.vue';
 
 const editEnabled = ref(false);
 const expand = ref(true);
@@ -40,16 +43,10 @@ function setupForm() {
     if(!baseForm.id) baseForm.id = crypto.randomUUID();
     if(!baseForm.title) baseForm.title = "";
     if(!baseForm.sections) baseForm.sections = [];
+    if(!baseForm.options) baseForm.options = [];
 
     return baseForm;
 }
-
-watch(editEnabled, (enabled) => {
-    if(enabled) return;
-    var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
-    baseForm.title = currentForm.value.title;
-    updateForm(baseForm);
-})
 
 watch(toolboxForm, () => {
     currentForm.value = setupForm();
@@ -57,6 +54,10 @@ watch(toolboxForm, () => {
 
 function toggleEdit() {
     editEnabled.value = !editEnabled.value;
+    if(editEnabled.value) return;
+    var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
+    baseForm.title = currentForm.value.title;
+    updateForm(baseForm);
 }
 
 function toggleExpand() {

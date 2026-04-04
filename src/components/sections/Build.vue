@@ -16,19 +16,22 @@
 
     <section v-if="submit" class="model-view">
         <!-- CHANGE THIS SO THAT IT USES A TABLE  -->
+        <div class="form-title">Result</div>
         <div class="model-container">
-            <div class="model-name-container">
-                <span>Field Name</span>
-                <div v-for="(value, index) in formattedFormModel()">
-                    {{ index }}
-                </div>
-            </div>
-            <div class="model-value-container">
-                <span>Value</span>
-                <div v-for="(value) in formattedFormModel()">
-                    {{ value == "" ? "-" : value }}
-                </div>
-            </div>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="width: 50%; text-align: center; font-weight: 900; font-size: 1rem;">Field Name</th>
+                        <th style="width: 50%; text-align: center; font-weight: 900; font-size: 1rem;">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(value, index) in formattedFormModel()"">
+                        <td style="text-align: center; font-weight: 300; font-size: 1rem;">{{ index }}</td>
+                        <td style="text-align: center; font-weight: 300; font-size: 1rem;">{{ value }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="submit-row">
             <button type="button" @click="returnToForm()" class="submit-btn">{{"<< Return"}}</button>
@@ -115,7 +118,6 @@ function returnToForm() {
 .build-view, .model-view {
     background-color: var(--color-border);
     width: 100%;
-    flex-grow: 1;
     padding: 1em;
     border-radius: 20px;
     display: flex;
@@ -123,22 +125,18 @@ function returnToForm() {
 }
 
 .model-view {
-    justify-content: center;
     gap: 1em;
 }
 
 .model-container {
+    width: 100%;
     display: flex;
-    flex-grow: 1;
-    gap: 1em;
     justify-content: center;
-    align-items: center;
 }
 
 .model-name-container, .model-value-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     gap:1em
 }
