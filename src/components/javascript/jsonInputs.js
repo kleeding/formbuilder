@@ -1,166 +1,184 @@
-/**
- * WHAT ABOUT MULTI PAGED QUOTES? 
- *  - ADD A PAGE FIELD
- *  - NEW PAGE COMPONENT 
- *      - IF PAGE FIELDS EXIST THEN PAGE COMPONENT WITH V-FOR LOOP IN THIS
- *      - IF PAGE FIELD DOES NOT EXIST THEN TREAT AS SINGLE PAGE 
- */
-
 export const example = (`{
     "title": "My First Form",
     "sections": [
         {
-            "id": "c7c33b35-e6df-4ae4-a383-e4a3a6df11d0",
-            "title": "The First Sectionsss",
+            "id": "c4328808-cb4b-475e-91a2-a0855cec4ad5",
+            "title": "A Section About Text",
             "questions": [
                 {
-                    "id": "4ec2990c-4fd3-469f-b51d-d1f2cc59924a",
-                    "model-name": "q1.1",
-                    "label": "Is this a text input?",
+                    "id": "124b465f-6071-491b-a30f-67be07ab8396",
+                    "model-name": "text1",
+                    "label": "This is a text field",
                     "component": "text",
-                    "default": "pre-filled text",
-                    "placeholder": "placeholder text goes here",
-                    "validation": [
-                        "range-100-300",
-                        "validsymbols"
-                    ],
                     "required": "false",
-                    "options": ""
-                },
-                {
-                    "id": "5160e478-5a59-45a2-ab48-ebb5f091985a",
-                    "model-name": "q1.2",
-                    "label": "Is this a text input?",
-                    "component": "text",
-                    "default": "pre-filled text",
-                    "placeholder": "placeholder text goes here",
-                    "required": "true",
-                    "validation": [
-                        "alphanumeric",
-                        "range-100-300"
-                    ],
-                    "options": ""
-                },
-                {
-                    "id": "fec4432c-9711-4e27-a4f8-fa9df5f861ad",
-                    "model-name": "q1.3",
-                    "label": "Choose a date?",
-                    "component": "date",
-                    "required": "false",
-                    "placeholder": "",
+                    "placeholder": "Enter text here",
                     "default": "",
-                    "options": ""
+                    "options": "",
+                    "validation": [],
+                    "dependency": ""
                 },
                 {
-                    "id": "c3eefaed-5898-470b-9013-8a6f7b583517",
-                    "model-name": "q1.4",
-                    "label": "This is a radio?",
-                    "component": "radio",
-                    "default": "0",
-                    "options": "YesNo",
-                    "questions": [
-                        {
-                            "id": "9e3e0f57-cb02-4653-86fd-5ab33f0b4960",
-                            "model-name": "q1.4.1",
-                            "label": "Further information",
-                            "component": "textarea",
-                            "placeholder": "placeholder text goes here",
-                            "required": "true",
-                            "dependency": "1",
-                            "default": "",
-                            "options": ""
-                        }
-                    ],
-                    "required": "false",
-                    "placeholder": ""
-                },
-                {
-                    "id": "933d91cf-293b-41aa-8c0f-ca74bf9d684c",
-                    "model-name": "q1.5",
-                    "label": "Pick some options?",
-                    "component": "checkbox",
-                    "options": "YesNo",
-                    "required": "false",
-                    "placeholder": "",
-                    "default": ""
-                },
-                {
-                    "id": "3c53d59e-9101-4ce9-83df-d766290256ba",
-                    "model-name": "q1.6",
-                    "label": "Pick some options?",
-                    "component": "checkbox",
-                    "options": "YesNo",
+                    "id": "110fe86e-7746-4066-8c84-cab3ea58bec4",
+                    "model-name": "text2",
+                    "label": "This is a text field that is required",
+                    "component": "text",
                     "required": "true",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": "Enter text here",
+                    "default": "",
+                    "options": "",
+                    "validation": [],
+                    "dependency": ""
+                },
+                {
+                    "id": "ee89e4c9-eb49-44c7-b1c5-1eeed9f96c89",
+                    "model-name": "textarea1",
+                    "label": "This is a textarea",
+                    "component": "textarea",
+                    "required": "false",
+                    "placeholder": "Enter text here",
+                    "default": "",
+                    "options": "",
+                    "validation": []
                 }
             ]
         },
         {
-            "id": "56f49ec5-a59b-42bd-9865-b4241096f8b6",
-            "title": "The Second Section",
+            "id": "8a483da6-ad18-43ee-8391-0a9e1a556b6e",
+            "title": "A Section About Inputs with Options",
             "questions": [
                 {
-                    "id": "2b4948b0-a94d-4f06-b366-d181279c9f98",
-                    "model-name": "q2.1",
-                    "label": "This is a select?",
-                    "component": "select",
-                    "options": "q2.1-option",
-                    "required": "true",
+                    "id": "4419cf9f-436e-4392-a131-2b76e1bfd44c",
+                    "model-name": "radio1",
+                    "label": "This is a radio button",
+                    "component": "radio",
+                    "required": "false",
+                    "placeholder": "",
+                    "default": "",
+                    "options": "YesNo",
+                    "validation": []
+                },
+                {
+                    "id": "25b0fd1a-b2b9-4baa-80f0-3cdc0ddab582",
+                    "model-name": "radio2",
+                    "label": "This is a radio button with dependents (click yes)",
+                    "component": "radio",
+                    "required": "false",
+                    "placeholder": "",
+                    "default": "0",
+                    "options": "YesNo",
+                    "validation": [],
                     "questions": [
                         {
-                            "id": "deb78dd6-69e8-431d-9655-06d97ba7d1f9",
-                            "model-name": "q2.1.1",
-                            "label": "What do you mean 'One'?",
-                            "component": "text",
-                            "placeholder": "placeholder text goes here",
-                            "required": "true",
-                            "dependency": "1",
-                            "validation": [
-                                "alphanumeric"
-                            ],
-                            "default": "",
-                            "options": ""
-                        },
-                        {
-                            "id": "c41fa1fe-abf1-402c-bff1-93b4c3fc9145",
-                            "model-name": "q2.1.2",
-                            "label": "Confirm your choice",
-                            "component": "radio",
-                            "required": "true",
-                            "dependency": "2",
-                            "default": "1",
-                            "options": "YesNo",
-                            "placeholder": ""
-                        },
-                        {
-                            "id": "a28b9c82-bc71-40fa-ab27-17901b5a9d52",
-                            "model-name": "q2.1.3",
-                            "label": "Further information",
+                            "id": "16352b5c-477e-4076-b80a-a8f8b254024b",
+                            "model-name": "textarea3",
+                            "label": "This is a textarea that is dependent on the above radio button",
                             "component": "textarea",
-                            "placeholder": "placeholder text goes here",
-                            "required": "true",
-                            "dependency": "3",
+                            "required": "false",
+                            "placeholder": "Enter text here",
+                            "dependency": "1",
                             "default": "",
-                            "options": ""
+                            "options": "",
+                            "validation": []
+                        }
+                    ]
+                },
+                {
+                    "id": "6fb842c9-fdca-47ee-977d-a04779cbfca1",
+                    "model-name": "select1",
+                    "label": "This is a select input",
+                    "component": "select",
+                    "required": "false",
+                    "placeholder": "",
+                    "default": "0",
+                    "options": "BasicOptions",
+                    "dependency": "",
+                    "validation": [],
+                    "questions": [
+                        {
+                            "id": "129c36c5-c0f7-4ef6-9dfa-6adfef754aa5",
+                            "model-name": "text3",
+                            "label": "This text depends on the above select being OptionOne",
+                            "component": "text",
+                            "required": "false",
+                            "placeholder": "Enter text here",
+                            "default": "",
+                            "options": "",
+                            "dependency": "1",
+                            "validation": []
                         },
                         {
-                            "id": "55077beb-db8d-41ac-b7e2-61b163d00ff8",
-                            "model-name": "q2.1.4",
-                            "label": "Did you really mean to pick 'One' or 'Two'?",
+                            "id": "1e035480-ae8c-4e24-b6c6-2de6f2c4d808",
+                            "model-name": "textarea4",
+                            "label": "This textarea depends on the above select being OptionTwo",
+                            "component": "textarea",
+                            "required": "false",
+                            "placeholder": "Enter text here",
+                            "default": "",
+                            "options": "",
+                            "dependency": "2",
+                            "validation": []
+                        },
+                        {
+                            "id": "df1baca8-9dd3-4cd7-80c8-393e3c1ef4b3",
+                            "model-name": "text4",
+                            "label": "This text depends on the above select being OptionThree or OptionFour",
+                            "component": "text",
+                            "required": "false",
+                            "placeholder": "Enter text here",
+                            "default": "",
+                            "options": "",
+                            "dependency": [
+                                "3",
+                                "4"
+                            ],
+                            "validation": []
+                        },
+                        {
+                            "id": "942ed0eb-43e6-4154-91ba-bd6ee5a8461f",
+                            "model-name": "radio3",
+                            "label": "This radio depends on the above select being OptionOne or OptionFive",
                             "component": "radio",
-                            "default": "1",
-                            "required": "true",
+                            "required": "false",
+                            "placeholder": "",
+                            "default": "",
                             "options": "YesNo",
                             "dependency": [
                                 "1",
-                                "2"
+                                "5"
                             ],
-                            "placeholder": ""
+                            "validation": []
                         }
-                    ],
+                    ]
+                },
+                {
+                    "id": "2566e699-c6a1-4673-a2aa-4e997a79d552",
+                    "model-name": "checkbox1",
+                    "label": "This is a checkbox input with dependents",
+                    "component": "checkbox",
+                    "required": "false",
                     "placeholder": "",
-                    "default": ""
+                    "default": "",
+                    "options": "MoreOptions",
+                    "dependency": "",
+                    "validation": []
+                }
+            ]
+        },
+        {
+            "id": "0a47e7c2-1582-4218-b44d-7ff80f490e14",
+            "title": "A Section About Other Inputs And Options",
+            "questions": [
+                {
+                    "id": "b611786a-7672-463c-9805-50a6dc16cf3a",
+                    "model-name": "date1",
+                    "label": "This is a date input",
+                    "component": "date",
+                    "required": "false",
+                    "placeholder": "",
+                    "default": "",
+                    "options": "",
+                    "dependency": "",
+                    "validation": []
                 }
             ]
         }
@@ -176,22 +194,48 @@ export const example = (`{
                 "value": "0"
             }
         ],
-        "q2.1-option": [
+        "BasicOptions": [
             {
                 "label": "Please Select",
                 "value": "0"
             },
             {
-                "label": "One",
+                "label": "OptionOne",
                 "value": "1"
             },
             {
-                "label": "Two",
+                "label": "OptionTwo",
                 "value": "2"
             },
             {
-                "label": "Other",
+                "label": "OptionThree",
                 "value": "3"
+            },
+            {
+                "label": "OptionFour",
+                "value": "4"
+            },
+            {
+                "label": "OptionFive",
+                "value": "5"
+            }
+        ],
+        "MoreOptions": [
+            {
+                "label": "BoxOne",
+                "value": "1"
+            },
+            {
+                "label": "BoxTwo",
+                "value": "2"
+            },
+            {
+                "label": "BoxThree",
+                "value": "3"
+            },
+            {
+                "label": "BoxFour",
+                "value": "4"
             }
         ]
     }
