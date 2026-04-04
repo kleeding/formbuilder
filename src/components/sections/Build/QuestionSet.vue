@@ -71,7 +71,7 @@ function hasFurtherQuestions(question) {
 }
 
 function parentValue(question) {
-    if(!formModel.value['model-name']) return "";
+    if(!formModel.value[question['model-name']]) return "";
     return formModel.value[question['model-name']].value;
 };
 

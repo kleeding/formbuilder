@@ -37,13 +37,13 @@
 
                 <div v-if="['text','textarea'].includes(currentQuestion.component)" class="question-setting">
                     <span class="toolbox-element-title">Placeholder:</span>
-                    <input v-if="editEnabled" type="text" v-model="currentQuestion.placeholder" name="label" placeholder="Enter placeholder text" />
+                    <input v-if="editEnabled" type="text" v-model="currentQuestion.placeholder" name="placeholder" placeholder="Enter placeholder text" />
                     <span v-else >{{ currentQuestion.placeholder }}</span>
                 </div>
 
                 <div v-if="['select', 'radio', 'checkbox'].includes(currentQuestion.component)" class="question-setting">
                     <span class="toolbox-element-title">Options:</span>
-                    <select v-if="editEnabled" v-model="currentQuestion.options" name="component" >
+                    <select v-if="editEnabled" v-model="currentQuestion.options" name="options" >
                         <option v-for="option in optionsList" :value="option">
                             {{ option }}
                         </option>
@@ -53,8 +53,17 @@
 
                 <div class="question-setting">
                     <span class="toolbox-element-title">Default:</span>
-                    <input v-if="editEnabled" type="text" v-model="currentQuestion.default" name="label" placeholder="Enter a default value" />
+                    <input v-if="editEnabled" type="text" v-model="currentQuestion.default" name="default" placeholder="Enter a default value" />
                     <span v-else >{{ currentQuestion.default }}</span>
+                </div>
+
+                <div v-if="position.length > 2" class="question-setting">
+                    <span class="toolbox-element-title">Dependency:</span>
+                    <div v-if="editEnabled" class="radio-container">    
+                        <input v-if="editEnabled" type="text" v-model="currentQuestion.dependency" name="label" placeholder="Enter a default value" />
+                        <span v-else >{{ currentQuestion.dependency }}</span>
+                    </div>
+                    <span v-else >{{ currentQuestion.dependency }}</span>
                 </div>
 
                 <div class="question-setting">
@@ -129,6 +138,7 @@ function setupQuestion() {
     if(!question.placeholder) question.placeholder = "";
     if(!question.default) question.default = "";
     if(!question.options) question.options = "";
+    if(!question.dependency) question.dependency = "";
     if(!question.validation) question.validation = [];
 
     return question;
