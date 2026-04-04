@@ -144,8 +144,18 @@ function setupQuestion() {
     return question;
 }
 
-watch(editEnabled, (enabled) => {
-    if(enabled) return;
+function toggleEdit() {
+    editEnabled.value = !editEnabled.value;
+    if(editEnabled.value) return;
+    
+    var dependencies = "";
+    if(currentQuestion.value.dependency !== "") {
+        if(!Array.isArray(currentQuestion.value.dependency)) {
+            dependencies = currentQuestion.value.dependency.split(',');
+            if(dependencies.length > 1) currentQuestion.value.dependency = dependencies;
+        }
+    }
+
     var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
 
     var positions = [...props.position];
@@ -169,10 +179,6 @@ watch(editEnabled, (enabled) => {
     baseForm.sections[positions[0]] = curPart;
 
     updateForm(baseForm);
-})
-
-function toggleEdit() {
-    editEnabled.value = !editEnabled.value;
 }
 
 function toggleExpand() {
