@@ -110,15 +110,13 @@ const props = defineProps({
   background-color: var(--color-background-chill);
   min-width: 320px;
   max-width: 400px;
-  /* height: 600px; */
-  /* overflow: auto; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 15px;
   border: 5px solid var(--color-border);
-  box-shadow: 8px 8px 15px 3px var(--color-background);
+  box-shadow: 8px 8px 15px 3px var(--vt-c-indigo);
   padding: 0 1.5em;
 
 }
@@ -144,7 +142,6 @@ const props = defineProps({
 }
 
 table {
-    /* background-color: var(--color-background-chill); */
     width: 100%;
     color: var(--color-background)
 }
