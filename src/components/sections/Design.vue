@@ -60,7 +60,7 @@ watch(currentFormData, (newFormData) => {
 
 function loadJson() {
     var loadedJson = localStorage.getItem("formJsonSave");
-    if(loadJson !== null && loadedJson !== "") return loadedJson;
+    if(loadedJson !== null && loadedJson !== "") return loadedJson;
     localStorage.setItem("formJsonSave", example);
     return example;
 }
