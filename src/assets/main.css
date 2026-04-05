@@ -37,12 +37,22 @@
 }
 
 .info-code {
-  background-color: var(--color-background-soft);
+  background-color: var(--color-border);
   width: 80%;
   padding: 1em;
   overflow: auto;
   box-shadow: 4px 4px 2px 1px var(--vt-c-indigo);
   margin-bottom: 0.5em;
+}
+
+@media (max-width: 500px) {
+  .info-code {
+    width: 95%;
+    padding: 1em;
+    overflow: auto;
+    box-shadow: 4px 4px 2px 1px var(--vt-c-indigo);
+    margin-bottom: 0.5em;
+  }
 }
 
 section {
