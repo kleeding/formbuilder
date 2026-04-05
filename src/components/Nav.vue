@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import InfoModal from './sections/Design/InfoModal.vue';
+import InfoModal from './sections/InfoModal/InfoModal.vue';
 
 const showInfoModal = ref(false);
 
