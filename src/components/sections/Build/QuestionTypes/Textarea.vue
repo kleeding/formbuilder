@@ -47,7 +47,7 @@ watch(detailsRef, () => {
         formModel.value[modelName].validation = validate(formModel.value[modelName].value, props.details);
     }
     catch{
-        console.log("issue revalidating when updating question");
+        //console.log("issue revalidating when updating question");
     }
 });
 

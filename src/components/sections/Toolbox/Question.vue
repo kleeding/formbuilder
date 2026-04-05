@@ -131,10 +131,7 @@ function setupQuestion() {
     }
 
     /**
-     * Here I initialise all the possible fields, some of these are redundant for different components
-     * - also missing min/max for date component
-     * On save I need to delete the unused/unneeded fields 
-     * - Make a function called format question, can sort the dependencies out in there too
+     * - Missing min/max for date component
      */
     if(!question.id) question.id = crypto.randomUUID();
     if(!question['model-name']) question['model-name'] = crypto.randomUUID();
@@ -155,6 +152,26 @@ function toggleEdit() {
     if(editEnabled.value) return;
     
     // Need to move this into a format currentQuestion function
+
+
+    saveCurrentQuestion()
+
+    
+}
+
+function formatCurrentQuestion() {
+    if(currentQuestion.value.component === "") return; // unfinished initialisation - format next time
+
+    if(currentQuestion.value.required === "false") delete currentQuestion.value.required; // assumed false
+    if(currentQuestion.value.default === "") delete currentQuestion.value.default;
+
+    if(['select','radio','checkbox'].includes(currentQuestion.value.component)) currentQuestion.value.placeholder = "";
+    if(currentQuestion.value.placeholder === "") delete currentQuestion.value.placeholder;
+
+    if(['text','textarea','date'].includes(currentQuestion.value.component)) delete currentQuestion.value.options;
+
+    if(currentQuestion.value.validation.length === 0) delete currentQuestion.value.validation;
+
     var dependencies = "";
     if(currentQuestion.value.dependency !== "") {
         if(!Array.isArray(currentQuestion.value.dependency)) {
@@ -162,8 +179,11 @@ function toggleEdit() {
             if(dependencies.length > 1) currentQuestion.value.dependency = dependencies;
         }
     }
+    if(currentQuestion.value.dependency === "") delete currentQuestion.value.dependency;
+}
 
-    // Need to move the following into a save currentQuestion function
+function saveCurrentQuestion() {
+    formatCurrentQuestion()
     var baseForm = JSON.parse(JSON.stringify(toolboxForm.value));
 
     var positions = [...props.position];
