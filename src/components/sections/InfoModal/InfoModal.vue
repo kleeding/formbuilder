@@ -37,7 +37,7 @@ const props = defineProps({
   position: absolute;
   top: 188px;
   background-color: var(--color-background-chill);
-  width: calc(80%);
+  width: 100%;
   max-width: 600px;
   display: flex;
   flex-direction: column;
