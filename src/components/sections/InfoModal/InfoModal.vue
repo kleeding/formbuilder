@@ -35,7 +35,7 @@ const props = defineProps({
 <style scoped>
 .modal {
   position: absolute;
-  top: 190px;
+  top: 188px;
   background-color: var(--color-background-chill);
   width: calc(80%);
   max-width: 600px;
