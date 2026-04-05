@@ -5,7 +5,7 @@
         The following are tables describing the various fields and attributes that can be included in the JSON schema.
     </span>
     <div class="info-section">
-      <span class="info-title">Section</span>
+      <span class="info-subtitle">Section</span>
       <table class="info-table">
         <thead>
           <tr>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="info-section">
-      <span class="info-title">Question</span>
+      <span class="info-subtitle">Question</span>
       <table>
         <thead>
           <tr>
@@ -108,8 +108,7 @@ const props = defineProps({
   position: absolute;
   top: 200px;
   background-color: var(--color-background-chill);
-  min-width: 320px;
-  max-width: 400px;
+  width: calc(80%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,7 +116,7 @@ const props = defineProps({
   border-radius: 15px;
   border: 5px solid var(--color-border);
   box-shadow: 8px 8px 15px 3px var(--vt-c-indigo);
-  padding: 0 1.5em;
+  padding: 1em 1.5em;
 
 }
 
@@ -126,6 +125,11 @@ const props = defineProps({
 }
 
 .info-title {
+  font-weight: 900;
+  font-size: 1.8rem;
+}
+
+.info-subtitle {
   font-weight: 900;
   font-size: 1.5rem;
 }
@@ -156,5 +160,11 @@ th, td {
     text-align: center;
     padding: 0 1em;
     text-wrap: wrap;
+}
+
+ @media (min-width: 960px) {
+  .modal {
+    max-width: 768px;
+  }
 }
 </style>
