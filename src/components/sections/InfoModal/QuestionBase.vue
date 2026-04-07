@@ -58,9 +58,9 @@ const questionJsonDate = `{
 }`;
 
 const sharedAttributes = 
-`    "default": "",              // value on load
-    "questions": [],         // list of nest questions that depend on this question
-    "dependency": "",    // nested questions can be enabled based on parent question values
-    "required": "false",  // mandatory question - auto valiates non-empty
-    "valiation": []           // list of validation rules to applie to the question`
+`"default": "",              // value on load
+"questions": [],         // list of nest questions that depend on this question
+"dependency": "",    // nested questions can be enabled based on parent question values
+"required": "false",  // mandatory question - auto valiates non-empty
+"valiation": []           // list of validation rules to applie to the question`
 </script>

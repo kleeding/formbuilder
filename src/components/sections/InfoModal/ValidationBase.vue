@@ -27,8 +27,8 @@ const sectionJson = `[
 ]`;
 
 const paramExampleJson = 
-`    "range-100-200",  // between 100 and 200
-    "greater-100",       // greater than or equal to 100
-    "less-200",             // less than or equal to 200
+`"range-100-200",  // between 100 and 200
+"greater-100",       // greater than or equal to 100
+"less-200",             // less than or equal to 200
 `;
 </script>
